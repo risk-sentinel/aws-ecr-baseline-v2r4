@@ -54,3 +54,9 @@ build-iPhoneSimulator/
 
 # Used by RuboCop. Remote config files pulled in from inherit_from directive.
 # .rubocop-https?--*
+
+# InSpec vendored dependencies + lockfile (re-vendored in CI) + exec output
+vendor/
+inspec.lock
+exec.json
+*.hdf.json

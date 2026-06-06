@@ -1,0 +1,56 @@
+name: aws-ecr-baseline-v2r4
+title: AWS Container Platform Baseline (DISA Container Platform SRG V2R4)
+maintainer: Risk Sentinel
+copyright: Risk Sentinel
+copyright_email: support@risk-sentinel.org
+license: Apache-2.0
+summary: |
+  Tier-2 InSpec baseline implementing the DISA Container Platform Security
+  Requirements Guide (SRG) V2R4 — all 188 requirements — tailored for the AWS
+  container platform.
+
+  Scaffolded from the SRG XCCDF via MITRE SAF `generate inspec_profile`
+  (SRG-APP-…-CTR-… control IDs preserved for 1:1 traceability, same stub-from-
+  XCCDF approach used for the CIS profiles), then tailored per the AWS
+  shared-responsibility model. Every control is dispositioned via
+  `implementation_status`:
+
+  - `implemented` — registry requirements asserted against Amazon ECR
+    (scan-on-push, enhanced scanning, tag immutability, repository/registry
+    permissions, lifecycle, encryption, image findings) — the primary
+    automated coverage; the focus of this repo.
+  - `inherited` — satisfied by the AWS-managed runtime, host OS, and
+    orchestrator control plane (AWS FedRAMP/DoD ATO); passes with evidence.
+  - `not-applicable` / `alternative` — deployment-/governance-specific
+    requirements rendered N/A or carrying a SAF attestation.
+
+  Note: ECR coverage here is account-wide and stands alone; the
+  `aws-ecs-fargate-baseline` separately re-validates the registry posture of
+  the repos backing its own workloads (each profile stands alone).
+
+  Targets AWS Commercial (aws) and AWS GovCloud non-DoD (aws-us-gov);
+  behaviour tuned via inputs. Built for any consumer, not just SPARC.
+version: 0.1.0
+inspec_version: '>= 5.0'
+
+supports:
+  - platform: aws
+
+depends:
+  - name: inspec-aws
+    git: https://github.com/inspec/inspec-aws.git
+    branch: main
+
+inputs:
+  - name: aws_partition
+    type: string
+    value: aws                 # aws | aws-us-gov
+  - name: assessed_repositories
+    type: array
+    value: []                  # ECR repository names to assess; empty = all in-account repos
+  - name: max_image_finding_severity
+    type: string
+    value: HIGH                # findings above this severity fail the vuln gate
+  - name: trusted_registry_account_ids
+    type: array
+    value: []                  # account IDs whose ECR registries are approved image sources
