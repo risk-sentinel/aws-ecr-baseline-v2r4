@@ -63,3 +63,12 @@ inputs:
   - name: trusted_registry_account_ids
     type: array
     value: []                  # account IDs whose ECR registries are approved image sources
+  - name: leveraged_evidence_base
+    type: string
+    value: ''  # base URI for the leveraged AWS FedRAMP/DoD authorization manifest (inherited evidence)
+  - name: inherited_evidence_uri
+    type: string
+    value: ''  # explicit override URI for the inherited-evidence manifest
+  - name: leveraged_evidence_max_age_days
+    type: numeric
+    value: 365

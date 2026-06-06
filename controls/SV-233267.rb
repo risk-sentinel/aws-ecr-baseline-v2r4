@@ -28,4 +28,25 @@ control 'SV-233267' do
   tag 'documentable'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
+  tag implementation_status: 'inherited'
+  tag inherited_from: 'aws-shared-responsibility'
+
+  # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
+  # infra). Evidence = the leveraged AWS FedRAMP/DoD authorization manifest; Skip (not a
+  # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
+  ev = input('inherited_evidence_uri', value: '')
+  ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
+  max_age = input('leveraged_evidence_max_age_days', value: 365)
+  impact 0.5
+  if ev.to_s.empty?
+    describe 'AWS-inherited authorization evidence' do
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+    end
+  else
+    doc = document_attestation(ev, max_age_days: max_age)
+    describe "AWS authorization evidence (#{ev})" do
+      it('exists')  { expect(doc.exists?).to eq(true) }
+      it('current') { expect(doc.current?(max_age)).to eq(true) }
+    end
+  end
 end
