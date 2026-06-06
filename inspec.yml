@@ -53,7 +53,10 @@ inputs:
     value: []                  # repos to drop from scoring (e.g. third-party/archived); applied on top of the default account-wide scan
   - name: max_image_finding_severity
     type: string
-    value: HIGH                # findings above this severity fail the vuln gate
+    value: HIGH  # above this => fail; an unscanned image also fails (fail-closed)
+  - name: require_enhanced_scanning
+    type: boolean
+    value: true  # true => ENHANCED (Inspector) required; false => BASIC accepted
   - name: trusted_registry_account_ids
     type: array
     value: []                  # account IDs whose ECR registries are approved image sources

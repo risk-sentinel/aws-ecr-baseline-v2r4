@@ -38,7 +38,13 @@ control 'SV-233210' do
   impact 0.0 if repos.empty?
   only_if('No ECR repositories in scope') { !repos.empty? }
 
-  describe aws_ecr_registry_scanning do
-    it { should be_enhanced }
+  if input('require_enhanced_scanning', value: true)
+    describe aws_ecr_registry_scanning do
+      it { should be_enhanced }
+    end
+  else
+    describe aws_ecr_registry_scanning do
+      it { should be_configured }
+    end
   end
 end

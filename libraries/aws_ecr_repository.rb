@@ -104,6 +104,45 @@ class AwsEcrRepository < AwsResourceBase
     end
   end
 
+  # Lazily-fetched image inventory (DescribeImages, paginated): per-image digest, tags,
+  # scan status, and finding-severity counts. Fetched only when a control needs it.
+  def images
+    return @images if defined?(@images)
+    @images = []
+    catch_aws_errors do
+      next_token = nil
+      loop do
+        resp = @aws.ecr_client.describe_images(repository_name: @repository_name, next_token: next_token, max_results: 100)
+        Array(resp.image_details).each do |d|
+          summary = d.image_scan_findings_summary
+          @images << {
+            digest:          d.image_digest,
+            tags:            Array(d.image_tags),
+            scan_status:     d.image_scan_status&.status.to_s,
+            severity_counts: (summary && summary.finding_severity_counts) || {},
+          }
+        end
+        next_token = resp.next_token
+        break if next_token.nil? || next_token.to_s.empty?
+      end
+    end
+    @images
+  end
+
+  # Image digests/tags that violate the scan gate: fail-closed — an image whose scan is
+  # not COMPLETE counts as a violation (unscanned == unproven == non-compliant), as does
+  # any image carrying findings above the tolerated severity ceiling.
+  def scan_gate_violations(ceiling)
+    rank = %w[INFORMATIONAL LOW MEDIUM HIGH CRITICAL]
+    idx  = rank.index(ceiling.to_s.upcase) || rank.index("HIGH")
+    disallowed = rank[(idx + 1)..] || []
+    images.select do |im|
+      next true unless im[:scan_status] == "COMPLETE" # fail-closed: unscanned == violation
+      counts = im[:severity_counts] || {}
+      disallowed.sum { |s| counts[s].to_i + counts[s.to_sym].to_i } > 0
+    end.map { |im| im[:tags].first || im[:digest] }
+  end
+
   def to_s
     "ECR Repository #{@repository_name}"
   end
