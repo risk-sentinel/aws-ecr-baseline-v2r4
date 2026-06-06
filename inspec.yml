@@ -57,6 +57,9 @@ inputs:
   - name: require_enhanced_scanning
     type: boolean
     value: true  # true => ENHANCED (Inspector) required; false => BASIC accepted
+  - name: require_kms_cmk_encryption
+    type: boolean
+    value: true  # true => repos must use a KMS CMK; false => AWS-managed AES256 accepted
   - name: trusted_registry_account_ids
     type: array
     value: []                  # account IDs whose ECR registries are approved image sources
