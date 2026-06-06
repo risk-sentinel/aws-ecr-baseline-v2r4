@@ -32,4 +32,11 @@ control 'SV-233163' do
   tag 'documentable'
   tag cci: ['CCI-002233']
   tag nist: ['AC-6 (8)']
+  tag implementation_status: 'not-applicable'
+
+  impact 0.0
+  describe 'Least-privilege image execution: task-definition control — covered by aws-ecs-fargate-baseline (N/A)' do
+    subject { true }
+    it { is_expected.to eq true }
+  end
 end

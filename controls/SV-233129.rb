@@ -30,4 +30,11 @@ control 'SV-233129' do
   tag 'documentable'
   tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']
+  tag implementation_status: 'alternative'
+  tag attestation_category: 'governance'
+
+  impact 0.5
+  describe 'Organization-defined restriction on who may launch is governance policy' do
+    skip 'Organization-defined restriction on who may launch is governance policy — organizational/governance control, not API-assertable; supply a SAF attestation (inspec-reporter-json-hdf.attestations).'
+  end
 end

@@ -29,4 +29,11 @@ control 'SV-233032' do
   tag 'documentable'
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']
+  tag implementation_status: 'not-applicable'
+
+  impact 0.0
+  describe 'DoD banner display: no platform-provided interactive session/console UI; AWS Console access is AWS-governed (N/A)' do
+    subject { true }
+    it { is_expected.to eq true }
+  end
 end

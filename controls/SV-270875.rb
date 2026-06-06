@@ -24,4 +24,11 @@ control 'SV-270875' do
   tag 'documentable'
   tag cci: ['CCI-001095']
   tag nist: ['SC-5 (2)']
+  tag implementation_status: 'not-applicable'
+
+  impact 0.0
+  describe 'Container resource request limits: task-definition control — covered by aws-ecs-fargate-baseline (N/A)' do
+    subject { true }
+    it { is_expected.to eq true }
+  end
 end

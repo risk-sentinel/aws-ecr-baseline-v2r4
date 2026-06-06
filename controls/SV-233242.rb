@@ -30,4 +30,11 @@ control 'SV-233242' do
   tag 'documentable'
   tag cci: ['CCI-002696']
   tag nist: ['SI-6 a']
+  tag implementation_status: 'alternative'
+  tag attestation_category: 'governance'
+
+  impact 0.5
+  describe 'Organization-defined role verification of security-function operation is a governance activity' do
+    skip 'Organization-defined role verification of security-function operation is a governance activity — organizational/governance control, not API-assertable; supply a SAF attestation (inspec-reporter-json-hdf.attestations).'
+  end
 end

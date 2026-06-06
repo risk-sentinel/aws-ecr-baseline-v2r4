@@ -31,4 +31,11 @@ control 'SV-233039' do
   tag 'documentable'
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
+  tag implementation_status: 'alternative'
+  tag attestation_category: 'governance'
+
+  impact 0.5
+  describe 'ISSM-only authorization is an organizational IAM-governance decision' do
+    skip 'ISSM-only authorization is an organizational IAM-governance decision — organizational/governance control, not API-assertable; supply a SAF attestation (inspec-reporter-json-hdf.attestations).'
+  end
 end
