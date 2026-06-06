@@ -28,4 +28,11 @@ control 'SV-233229' do
   tag 'documentable'
   tag cci: ['CCI-002824']
   tag nist: ['SI-16']
+  tag implementation_status: 'alternative'
+  tag attestation_category: 'operational'
+
+  impact 0.5
+  describe 'operational/governance control (SAF attestation)' do
+    skip 'organizational/operational control (alerting, governance policy, or password-breach tooling) — not API-assertable; supply a SAF attestation.'
+  end
 end

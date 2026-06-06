@@ -52,14 +52,18 @@ control 'SV-233233' do
   tag nist: ['SI-2 c']
   tag implementation_status: 'implemented'
 
-  # Registry-layer ECR assertion (scan-on-push surfaces CVEs so images stay current); account-wide, scoped via excluded_repositories.
+  # Registry-layer: "latest images with security updates" => no in-scope image is
+  # unscanned or carrying findings above max_image_finding_severity (fail-closed:
+  # unscanned == unproven == violation). scan-on-push itself is CTR-001335.
+  ceiling = input('max_image_finding_severity', value: 'HIGH')
   repos = ecr_repos_in_scope
   impact 0.0 if repos.empty?
   only_if('No ECR repositories in scope') { !repos.empty? }
 
   repos.each do |name|
-    describe aws_ecr_repository(repository_name: name) do
-      it { should be_scan_on_push }
+    describe "Image scan gate for #{name} (no unscanned or >#{ceiling}-severity images)" do
+      subject { aws_ecr_repository(repository_name: name).scan_gate_violations(ceiling) }
+      it { should be_empty }
     end
   end
 end

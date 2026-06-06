@@ -35,4 +35,16 @@ control 'SV-233230' do
   tag 'documentable'
   tag cci: ['CCI-002617']
   tag nist: ['SI-2 (6)']
+  tag implementation_status: 'implemented'
+
+  # Remove old images: a lifecycle policy must be present.
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe aws_ecr_repository(repository_name: name) do
+      it { should have_lifecycle_policy }
+    end
+  end
 end

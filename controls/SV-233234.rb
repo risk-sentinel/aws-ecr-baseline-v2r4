@@ -35,4 +35,18 @@ control 'SV-233234' do
   tag 'documentable'
   tag cci: ['CCI-002605']
   tag nist: ['SI-2 c']
+  tag implementation_status: 'implemented'
+
+  # Security updates installed within window => no unscanned/over-severity images (finding gate).
+  ceiling = input('max_image_finding_severity', value: 'HIGH')
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe "Image currency (no unscanned or >#{ceiling}-severity) for #{name}" do
+      subject { aws_ecr_repository(repository_name: name).scan_gate_violations(ceiling) }
+      it { should be_empty }
+    end
+  end
 end

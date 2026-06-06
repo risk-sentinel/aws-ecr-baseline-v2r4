@@ -53,7 +53,25 @@ inputs:
     value: []                  # repos to drop from scoring (e.g. third-party/archived); applied on top of the default account-wide scan
   - name: max_image_finding_severity
     type: string
-    value: HIGH                # findings above this severity fail the vuln gate
+    value: HIGH  # above this => fail; an unscanned image also fails (fail-closed)
+  - name: require_enhanced_scanning
+    type: boolean
+    value: true  # true => ENHANCED (Inspector) required; false => BASIC accepted
+  - name: require_kms_cmk_encryption
+    type: boolean
+    value: true  # true => repos must use a KMS CMK; false => AWS-managed AES256 accepted
   - name: trusted_registry_account_ids
     type: array
     value: []                  # account IDs whose ECR registries are approved image sources
+  - name: leveraged_evidence_base
+    type: string
+    value: ''  # base URI for the leveraged AWS FedRAMP/DoD authorization manifest (inherited evidence)
+  - name: inherited_evidence_uri
+    type: string
+    value: ''  # explicit override URI for the inherited-evidence manifest
+  - name: leveraged_evidence_max_age_days
+    type: numeric
+    value: 365
+  - name: pw_min_length
+    type: numeric
+    value: 15  # DoD minimum password length

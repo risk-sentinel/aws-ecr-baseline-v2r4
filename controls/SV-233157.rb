@@ -27,4 +27,12 @@ control 'SV-233157' do
   tag 'documentable'
   tag cci: ['CCI-002130']
   tag nist: ['AC-2 (4)']
+  tag implementation_status: 'implemented'
+
+  ok = audit_trail_compliant?
+  impact 0.5
+  describe 'CloudTrail audit-record generation (multi-region + log-file-validation + S3)' do
+    subject { ok }
+    it { is_expected.to be true }
+  end
 end

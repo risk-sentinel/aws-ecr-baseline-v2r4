@@ -25,4 +25,10 @@ control 'SV-233091' do
   tag 'documentable'
   tag cci: ['CCI-004066']
   tag nist: ['IA-5 (1) (h)']
+  tag implementation_status: 'implemented'
+
+  impact 0.5
+  describe aws_iam_password_policy do
+    it { should require_lowercase_characters }
+  end
 end

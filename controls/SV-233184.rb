@@ -29,4 +29,16 @@ control 'SV-233184' do
   tag 'documentable'
   tag cci: ['CCI-003980']
   tag nist: ['CM-11 (2)']
+  tag implementation_status: 'implemented'
+
+  # Unauthorized image modification prevented by tag immutability.
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe aws_ecr_repository(repository_name: name) do
+      it { should be_immutable }
+    end
+  end
 end

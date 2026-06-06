@@ -32,4 +32,11 @@ control 'SV-233033' do
   tag 'documentable'
   tag cci: ['CCI-000050']
   tag nist: ['AC-8 b']
+  tag implementation_status: 'not-applicable'
+
+  impact 0.0
+  describe 'DoD banner retention: no platform-provided interactive session/console UI (N/A)' do
+    subject { true }
+    it { is_expected.to eq true }
+  end
 end

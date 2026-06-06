@@ -23,4 +23,11 @@ control 'SV-233149' do
   tag 'documentable'
   tag cci: ['CCI-002364']
   tag nist: ['AC-12 (2)']
+  tag implementation_status: 'not-applicable'
+
+  impact 0.0
+  describe 'Explicit logout message: no platform-provided interactive user session UI; access is AWS API/Console (N/A)' do
+    subject { true }
+    it { is_expected.to eq true }
+  end
 end

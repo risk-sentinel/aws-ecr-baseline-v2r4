@@ -28,4 +28,17 @@ control 'SV-233065' do
   tag 'documentable'
   tag cci: ['CCI-003992']
   tag nist: ['CM-14']
+  tag implementation_status: 'implemented'
+
+  # Verify images: every in-scope image signed + SBOM-attached (fail-closed).
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe "Image supply-chain (signed + SBOM) for #{name}" do
+      subject { aws_ecr_repository(repository_name: name).supply_chain_gaps }
+      it { should be_empty }
+    end
+  end
 end

@@ -28,6 +28,17 @@ module EcrScopeHelpers
   def clean_list(name)
     Array(input(name, value: [])).map(&:to_s).reject(&:empty?)
   end
+
+  # AUDIT: a durable, tamper-evident account CloudTrail (multi-region + log-file-
+  # validation + S3) = the mechanism that generates audit records for all API events.
+  def audit_trail_compliant?
+    Array(aws_cloudtrail_trails.names).any? do |n|
+      t = aws_cloudtrail_trail(trail_name: n)
+      t.is_multi_region_trail && t.log_file_validation_enabled && !t.s3_bucket_name.to_s.empty?
+    end
+  rescue StandardError
+    false
+  end
 end
 
 ::Inspec::Rule.include(EcrScopeHelpers)
