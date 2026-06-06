@@ -28,4 +28,14 @@ control 'SV-233263' do
   tag 'documentable'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
+  tag implementation_status: 'implemented'
+
+  # Durable, tamper-evident audit-record generation via account CloudTrail (cross-validates
+  # cis-aws-foundations). CloudTrail's record schema carries event type/time/source/user.
+  ok = audit_trail_compliant?
+  impact 0.5
+  describe 'CloudTrail audit-record generation (multi-region + log-file-validation + S3)' do
+    subject { ok }
+    it { is_expected.to be true }
+  end
 end
