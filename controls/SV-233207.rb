@@ -5,7 +5,7 @@ control 'SV-233207' do
                 diagnostic communications.'
   desc 'Unapproved mechanisms that are used for
                 authentication to the cryptographic module are not verified, and therefore cannot be
-                relied on to provide confidentiality or integrity, and DoD data may be compromised.
+                relied on to provide confidentiality or integrity, and organization data may be compromised.
                 Nonlocal maintenance and diagnostic activities are activities conducted by
                 individuals communicating through either an external network (e.g., the internet) or
                 an internal network. Currently, HMAC is the only FIPS-approved algorithm for
@@ -41,7 +41,7 @@ control 'SV-233207' do
   tag inherited_from: 'aws-shared-responsibility'
 
   # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
-  # infra). Evidence = the leveraged AWS FedRAMP/DoD authorization manifest; Skip (not a
+  # infra). Evidence = the leveraged the cloud-provider authorization manifest; Skip (not a
   # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
@@ -49,7 +49,7 @@ control 'SV-233207' do
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

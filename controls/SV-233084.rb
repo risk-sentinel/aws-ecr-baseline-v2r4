@@ -10,7 +10,7 @@ control 'SV-233084' do
                 impractical to achieve a successful authentication by recording and replaying a
                 previous authentication message. Note that the anti-replay service is implicit when
                 data contains monotonically increasing sequence numbers and data integrity is
-                assured. Use of DoD PKI is inherently compliant with this requirement for user and
+                assured. Use of organization PKI is inherently compliant with this requirement for user and
                 device access. Use of Transport Layer Security (TLS), including application
                 protocols such as HTTPS and DNSSEC, that use TLS/SSL as the underlying security
                 protocol is also compliant. Configure the information system to use the hash message
@@ -42,7 +42,7 @@ control 'SV-233084' do
   tag inherited_from: 'aws-shared-responsibility'
 
   # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
-  # infra). Evidence = the leveraged AWS FedRAMP/DoD authorization manifest; Skip (not a
+  # infra). Evidence = the leveraged the cloud-provider authorization manifest; Skip (not a
   # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
@@ -50,7 +50,7 @@ control 'SV-233084' do
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

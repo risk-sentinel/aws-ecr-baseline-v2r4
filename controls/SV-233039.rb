@@ -1,6 +1,6 @@
 control 'SV-233039' do
-  title 'The container platform must allow only the ISSM (or individuals or roles
-                appointed by the ISSM) to select which auditable events are to be audited.'
+  title 'The container platform must allow only the security officer (or individuals or roles
+                appointed by the security officer) to select which auditable events are to be audited.'
   desc "Without the capability to restrict which roles and
                 individuals can select which events are audited, unauthorized personnel may be able
                 to prevent the auditing of critical events. Misconfigured audits may degrade the
@@ -12,13 +12,13 @@ control 'SV-233039' do
                 generating audit
                 records."
   desc 'check', 'Review the container platform to determine if the container platform
-                    is configured to allow only the ISSM (or individuals or roles appointed by the
-                    ISSM) to select which auditable events are to be audited. If the container
-                    platform is not configured to only allow the ISSM (or individuals or roles
-                    appointed by the ISSM) to select which auditable events are to be audited, this
+                    is configured to allow only the security officer (or individuals or roles appointed by the
+                    security officer) to select which auditable events are to be audited. If the container
+                    platform is not configured to only allow the security officer (or individuals or roles
+                    appointed by the security officer) to select which auditable events are to be audited, this
                     is a finding.'
   desc 'fix', 'Configure the container platform to only allow the
-                ISSM (or individuals or roles appointed by the ISSM) to select which auditable
+                security officer (or individuals or roles appointed by the security officer) to select which auditable
                 events are to be audited.'
   impact 0.5
   tag check_id: 'C-35975r601614_chk'
@@ -35,7 +35,7 @@ control 'SV-233039' do
   tag attestation_category: 'governance'
 
   impact 0.5
-  describe 'ISSM-only authorization is an organizational IAM-governance decision' do
-    skip 'ISSM-only authorization is an organizational IAM-governance decision — organizational/governance control, not API-assertable; supply a SAF attestation (inspec-reporter-json-hdf.attestations).'
+  describe 'security officer-only authorization is an organizational IAM-governance decision' do
+    skip 'security officer-only authorization is an organizational IAM-governance decision — organizational/governance control, not API-assertable; supply a SAF attestation (inspec-reporter-json-hdf.attestations).'
   end
 end

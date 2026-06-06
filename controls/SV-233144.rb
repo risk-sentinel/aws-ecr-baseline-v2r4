@@ -1,10 +1,10 @@
 control 'SV-233144' do
   title 'The container platform must notify system administrators (SAs) and the
-                information system security officer (ISSO) when accounts are modified.'
+                information system security officer (security officer) when accounts are modified.'
   desc 'When application accounts are modified, user
                 accessibility is affected. Accounts are utilized for identifying individual users or
                 for identifying the application processes themselves. Sending notification of
-                account modification events to the system administrator and ISSO is one method for
+                account modification events to the system administrator and security officer is one method for
                 mitigating this risk. Such a capability greatly reduces the risk that application
                 accessibility will be negatively affected for extended periods of time and provides
                 logging that can be used for forensic purposes. To address access requirements, many
@@ -12,10 +12,10 @@ control 'SV-233144' do
                 authentication/access/auditing mechanisms that meet or exceed access control policy
                 requirements.'
   desc 'check', 'Review the container platform configuration to determine if system
-                    administrators and ISSO are notified when accounts are modified. If system
-                    administrators and ISSO are not notified, this is a finding.'
+                    administrators and security officer are notified when accounts are modified. If system
+                    administrators and security officer are not notified, this is a finding.'
   desc 'fix', 'Configure the container platform to notify system
-                administrators and ISSO when accounts are modified.'
+                administrators and security officer when accounts are modified.'
   impact 0.5
   tag check_id: 'C-36080r600919_chk'
   tag severity: 'medium'

@@ -8,10 +8,10 @@ control 'SV-233101' do
                 individual user or group will not be available for forensic
                 analysis.'
   desc 'check', 'Review documentation and configuration to ensure the container
-                    platform provides a PKI integration capability that meets DoD PKI infrastructure
+                    platform provides a PKI integration capability that meets organization PKI infrastructure
                     requirements. If the container platform is not configured to meet this
                     requirement, this is a finding.'
-  desc 'fix', 'Configure the container platform to utilize the DoD
+  desc 'fix', 'Configure the container platform to utilize the organization
                 Enterprise PKI infrastructure.'
   impact 0.5
   tag check_id: 'C-36037r600790_chk'
@@ -27,14 +27,14 @@ control 'SV-233101' do
   tag implementation_status: 'inherited'
   tag inherited_from: 'aws-shared-responsibility'
 
-  # AWS-managed: IAM identity internals / Fargate runtime / platform config (FedRAMP/DoD ATO).
+  # AWS-managed: IAM identity internals / Fargate runtime / platform config (the cloud-provider authorization).
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
   max_age = input('leveraged_evidence_max_age_days', value: 365)
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

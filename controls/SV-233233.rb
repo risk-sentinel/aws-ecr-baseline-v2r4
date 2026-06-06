@@ -1,7 +1,7 @@
 control 'SV-233233' do
   title 'The container platform registry must contain the latest images with most recent
                 security-relevant software updates within 30 days unless the time period is directed
-                by an authoritative source (e.g., IAVM, CTOs, DTMs, STIGs).'
+                by an authoritative source (e.g., an authoritative source).'
   desc 'Software supporting the container platform, images in
                 the registry must stay up to date with the latest patches, service packs, and hot
                 fixes. Not updating the container platform and container images will expose the
@@ -19,16 +19,16 @@ control 'SV-233233' do
                 regarding the patch management process will also vary. This means that the time
                 period utilized must be a configurable parameter. Time frames for application of
                 security-relevant software updates may be dependent upon the Information Assurance
-                Vulnerability Management (IAVM) process. The container platform components will be
+                Vulnerability Management (the vulnerability-management program) process. The container platform components will be
                 configured to check for and install security-relevant software updates within an
                 identified time period from the availability of the update. The container platform
                 registry will ensure the images are current. The specific time period will be
-                defined by an authoritative source (e.g., IAVM, CTOs, DTMs, and
-                STIGs).'
+                defined by an authoritative source (e.g., an authoritative source, and
+                security guidance).'
   desc 'check', 'Review documentation and configuration to determine if the container
                     platform registry inspects and contains the latest approved vendor repository
                     images containing security-relevant updates within 30 days unless the time
-                    period is directed by an authoritative source (IAVM, CTOs, DTMs, STIGs, etc.).
+                    period is directed by an authoritative source (an authoritative source, etc.).
                     If the container platform registry does not contain the latest image with
                     security-relevant updates within 30 days unless a time period directed by the
                     authoritative source, this is a finding. The container platform registry should
@@ -38,7 +38,7 @@ control 'SV-233233' do
   desc 'fix', 'Configure the container platform registry to use
                 an approved vendor repository to ensure the latest images containing
                 security-relevant updates are installed within 30 days unless a time period is
-                directed by an authoritative source (IAVM, CTOs, DTMs, STIGs, etc.).'
+                directed by an authoritative source (an authoritative source, etc.).'
   impact 0.5
   tag check_id: 'C-36169r1137632_chk'
   tag severity: 'medium'

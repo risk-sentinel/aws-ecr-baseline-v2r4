@@ -12,7 +12,7 @@ control 'SV-233056' do
                 Commonly employed methods for protecting audit information include least privilege
                 permissions as well as restricting the location and number of log file repositories.
                 Additionally, applications with user interfaces to audit records should not allow
-                for the unfettered manipulation of or access to those records via the application.
+                for the unfettered manipulation of or access to those records via application.
                 If the application provides access to the audit data, the application becomes
                 accountable for ensuring audit information is protected from unauthorized access.
                 Audit information includes all information (e.g., audit records, audit settings, and
@@ -38,7 +38,7 @@ control 'SV-233056' do
   tag inherited_from: 'aws-shared-responsibility'
 
   # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
-  # infra). Evidence = the leveraged AWS FedRAMP/DoD authorization manifest; Skip (not a
+  # infra). Evidence = the leveraged the cloud-provider authorization manifest; Skip (not a
   # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
@@ -46,7 +46,7 @@ control 'SV-233056' do
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

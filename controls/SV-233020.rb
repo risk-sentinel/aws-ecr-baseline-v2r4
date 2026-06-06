@@ -8,7 +8,7 @@ control 'SV-233020' do
                 established as part of normal account activation procedures when there is a need for
                 short-term accounts without the demand for immediacy in account activation. If
                 temporary user accounts are used, the application must be configured to
-                automatically terminate these types of accounts after a DoD-defined period of 72
+                automatically terminate these types of accounts after a organization-defined period of 72
                 hours. To address access requirements, many application developers choose to
                 integrate their applications with enterprise-level authentication/access mechanisms
                 that meet or exceed access control policy requirements. Such integration allows the
@@ -35,14 +35,14 @@ control 'SV-233020' do
   tag implementation_status: 'inherited'
   tag inherited_from: 'aws-shared-responsibility'
 
-  # AWS-managed: IAM identity internals / Fargate runtime / platform config (FedRAMP/DoD ATO).
+  # AWS-managed: IAM identity internals / Fargate runtime / platform config (the cloud-provider authorization).
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
   max_age = input('leveraged_evidence_max_age_days', value: 365)
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

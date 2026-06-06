@@ -1,7 +1,7 @@
 control 'SV-233273' do
   title 'Container platform components must be configured in accordance with the security
-                configuration settings based on DoD security configuration or implementation
-                guidance, including SRGs, STIGs, NSA configuration guides, CTOs, and DTMs.'
+                configuration settings based on organization security configuration or implementation
+                guidance, including SRGs, security guidance, approved configuration baselines, directives, and directives.'
   desc 'Container platform components are part of the overall
                 container platform, offering services that enable the container platform to fully
                 orchestrate user containers. These components may fall outside the scope of this
@@ -15,15 +15,15 @@ control 'SV-233273' do
   desc 'check', 'Review the container platform configuration to determine the services
                     offered by the container platform and validate that any services that are
                     offered are configured in accordance with the security configuration settings
-                    based on DoD security configuration or implementation guidance, including SRGs,
-                    STIGs, NSA configuration guides, CTOs, and DTMs. If container platform services
+                    based on organization security configuration or implementation guidance, including SRGs,
+                    security guidance, approved configuration baselines, directives, and directives. If container platform services
                     are not configured in accordance with the security configuration settings based
-                    on DoD security configuration or implementation guidance, including SRGs, STIGs,
-                    NSA configuration guides, CTOs, and DTMs, this is a finding.'
+                    on organization security configuration or implementation guidance, including SRGs, security guidance,
+                    approved configuration baselines, directives, and directives, this is a finding.'
   desc 'fix', 'Configure container services in accordance with the
-                security configuration settings based on DoD security configuration or
-                implementation guidance, including SRGs, STIGs, NSA configuration guides, CTOs, and
-                DTMs.'
+                security configuration settings based on organization security configuration or
+                implementation guidance, including SRGs, security guidance, approved configuration baselines, directives, and
+                directives.'
   impact 0.5
   tag check_id: 'C-36209r601851_chk'
   tag severity: 'medium'
@@ -38,14 +38,14 @@ control 'SV-233273' do
   tag implementation_status: 'inherited'
   tag inherited_from: 'aws-shared-responsibility'
 
-  # AWS-managed: IAM identity internals / Fargate runtime / platform config (FedRAMP/DoD ATO).
+  # AWS-managed: IAM identity internals / Fargate runtime / platform config (the cloud-provider authorization).
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
   max_age = input('leveraged_evidence_max_age_days', value: 365)
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

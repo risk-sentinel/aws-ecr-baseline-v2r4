@@ -1,22 +1,22 @@
 control 'SV-233032' do
-  title 'The container platform must display the Standard Mandatory DoD Notice and Consent
+  title 'The container platform must display the Standard Mandatory organization consent
                 Banner before granting access to platform components.'
   desc 'The container platform has countless components where
                 different access levels are needed. To control access, the user must first log in to
-                the component and then be presented with a DoD-approved use notification banner
+                the component and then be presented with a organization-approved use notification banner
                 before granting access to the component. This guarantees privacy and security
                 notification verbiage used is consistent with applicable federal laws, Executive
                 Orders, directives, policies, regulations, standards, and
                 guidance.'
   desc 'check', 'Review the container platform configuration to determine if the
-                    Standard Mandatory DoD Notice and Consent Banner is configured to be displayed
+                    the organization-defined login banner is configured to be displayed
                     before granting access to platform components. Log in to the container platform
-                    components and verify that the Standard Mandatory DoD Notice and Consent Banner
-                    is being displayed before granting access. If the Standard Mandatory DoD Notice
+                    components and verify that the organization-defined login banner
+                    is being displayed before granting access. If the Standard Mandatory organization Notice
                     and Consent Banner is not configured or is not displayed before granting access
                     to container platform components, this is a finding.'
   desc 'fix', 'Configure the container platform to display the
-                Standard Mandatory DoD Notice and Consent Banner before granting access to container
+                the organization-defined login banner before granting access to container
                 platform components.'
   impact 0.3
   tag check_id: 'C-35968r601608_chk'
@@ -32,7 +32,7 @@ control 'SV-233032' do
   tag implementation_status: 'not-applicable'
 
   impact 0.0
-  describe 'DoD banner display: no platform-provided interactive session/console UI; AWS Console access is AWS-governed (N/A)' do
+  describe 'organization banner display: no platform-provided interactive session/console UI; AWS Console access is AWS-governed (N/A)' do
     subject { true }
     it { is_expected.to eq true }
   end

@@ -6,7 +6,7 @@ control 'ecr-registry-inventory' do
   desc "
     Enumerates every ECR repository in the account/region so the HDF records the full
     assessed registry surface, and flags which repositories are excluded from scoring
-    via the excluded_repositories input. Most organizations run more than one registry;
+    via excluded_repositories input. Most organizations run more than one registry;
     the per-repository registry controls iterate this in-scope set and score each repo
     independently (pass/fail per repo).
 

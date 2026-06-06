@@ -1,5 +1,5 @@
 control 'SV-233170' do
-  title 'The container platform must provide an immediate warning to the SA and ISSO (at a
+  title 'The container platform must provide an immediate warning to the SA and security officer (at a
                 minimum) when allocated audit record storage volume reaches 75 percent of repository
                 maximum audit record storage capacity.'
   desc 'If security personnel are not notified immediately
@@ -7,12 +7,12 @@ control 'SV-233170' do
                 storage capacity
                 expansion.'
   desc 'check', 'Review the container platform configuration to determine if it is
-                    configured to provide an immediate warning to the SA and ISSO (at a minimum)
+                    configured to provide an immediate warning to the SA and security officer (at a minimum)
                     when allocated audit record storage volume reaches 75 percent of repository
                     maximum audit record storage capacity. If the container platform is not
                     configured to provide an immediate real-time alert, this is a finding.'
   desc 'fix', 'Configure the container platform to provide an
-                immediate real-time alert to the SA and ISSO when allocated audit record storage
+                immediate real-time alert to the SA and security officer when allocated audit record storage
                 volume reaches 75 percent of repository maximum audit record storage capacity.'
   impact 0.5
   tag check_id: 'C-36106r601785_chk'

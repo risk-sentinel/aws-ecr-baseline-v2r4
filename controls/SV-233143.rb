@@ -1,21 +1,21 @@
 control 'SV-233143' do
   title 'The container platform must notify system administrators (SAs) and the
-                information system security officer (ISSO) when accounts are created.'
+                information system security officer (security officer) when accounts are created.'
   desc 'Once an attacker establishes access to an
                 application, the attacker often attempts to create a persistent method of
                 re-establishing access. One way to accomplish this is for the attacker to simply
                 create a new account. Sending notification of account creation events to the SA and
-                ISSO is one method for mitigating this risk. To address access requirements, many
+                security officer is one method for mitigating this risk. To address access requirements, many
                 application developers choose to integrate their applications with enterprise-level
                 authentication/access/auditing mechanisms that meet or exceed access control policy
                 requirements. Such integration allows the application developer to offload those
                 access control functions and focus on core application features and
                 functionality.'
   desc 'check', 'Review the container platform configuration to determine if system
-                    administrators and ISSO are notified when accounts are created. If SAs and ISSO
+                    administrators and security officer are notified when accounts are created. If SAs and security officer
                     are not notified, this is a finding.'
   desc 'fix', 'Configure the container platform to notify SAs and
-                ISSO when accounts are created.'
+                security officer when accounts are created.'
   impact 0.5
   tag check_id: 'C-36079r981869_chk'
   tag severity: 'medium'

@@ -1,24 +1,24 @@
 control 'SV-233033' do
-  title 'The container platform must retain the Standard Mandatory DoD Notice and Consent
+  title 'The container platform must retain the Standard Mandatory organization consent
                 Banner on the screen until users acknowledge the usage and conditions and take
                 explicit actions to log on for further access.'
   desc 'The banner must be acknowledged by the user prior to
                 allowing the user access to any container platform component. This provides
                 assurance that the user has seen the message and accepted the conditions for access.
-                If the consent banner is not acknowledged by the user, DoD will not be in compliance
+                If the consent banner is not acknowledged by the user, organization will not be in compliance
                 with system use notifications required by law. To establish acceptance of the
                 application usage policy, a click-through banner at application logon is required.
                 The application must prevent further activity until the user executes a positive
                 action to manifest agreement by clicking on a box indicating
                 "OK".'
   desc 'check', 'Log in to the container platform components to determine if the
-                    Standard Mandatory DoD Notice and Consent Banner remains on the screen until
+                    the organization-defined login banner remains on the screen until
                     users acknowledge the usage and conditions and take explicit actions to log on
-                    for further access. If the Standard Mandatory DoD Notice and Consent Banner does
+                    for further access. If the organization-defined login banner does
                     not stay on the screen until the users acknowledge the usage and conditions,
                     this is a finding.'
   desc 'fix', 'Configure the container platform to retain the
-                Standard Mandatory DoD Notice and Consent Banner on the screen until users
+                the organization-defined login banner on the screen until users
                 acknowledge the usage and conditions and take explicit actions to log on for further
                 access.'
   impact 0.3
@@ -35,7 +35,7 @@ control 'SV-233033' do
   tag implementation_status: 'not-applicable'
 
   impact 0.0
-  describe 'DoD banner retention: no platform-provided interactive session/console UI (N/A)' do
+  describe 'organization banner retention: no platform-provided interactive session/console UI (N/A)' do
     subject { true }
     it { is_expected.to eq true }
   end

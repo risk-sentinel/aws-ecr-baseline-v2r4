@@ -4,12 +4,12 @@ control 'SV-233073' do
   desc 'Ports, protocols, and services within the container
                 platform runtime must be controlled and conform to the PPSM CAL. Those ports,
                 protocols, and services that fall outside the PPSM CAL must be blocked by the
-                runtime. Instructions on the PPSM can be found in DoD Instruction 8551.01
+                runtime. Instructions on the PPSM can be found in organization Instruction 8551.01
                 Policy.'
   desc 'check', 'Review the container platform documentation and deployment
                     configuration to determine which ports and protocols are enabled. Verify the
                     ports and protocols being used are not prohibited by PPSM CAL in accordance to
-                    DoD Instruction 8551.01 Policy and are necessary for the operations and
+                    organization Instruction 8551.01 Policy and are necessary for the operations and
                     applications. If any of the ports or protocols is prohibited or not necessary
                     for the operation, this is a finding.'
   desc 'fix', 'Configure the container platform to disable any
@@ -30,7 +30,7 @@ control 'SV-233073' do
   tag inherited_from: 'aws-shared-responsibility'
 
   # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
-  # infra). Evidence = the leveraged AWS FedRAMP/DoD authorization manifest; Skip (not a
+  # infra). Evidence = the leveraged the cloud-provider authorization manifest; Skip (not a
   # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
   ev = input('inherited_evidence_uri', value: '')
   ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
@@ -38,7 +38,7 @@ control 'SV-233073' do
   impact 0.5
   if ev.to_s.empty?
     describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
     end
   else
     doc = document_attestation(ev, max_age_days: max_age)

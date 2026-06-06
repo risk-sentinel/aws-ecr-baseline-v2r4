@@ -1,11 +1,11 @@
 control 'SV-233158' do
   title 'The container platform must notify the system administrator (SA) and information
-                system security officer (ISSO) of account enabling actions.'
+                system security officer (security officer) of account enabling actions.'
   desc 'Once an attacker establishes access to an
                 application, the attacker often attempts to create a persistent method of
                 re-establishing access. One way to accomplish this is for the attacker to simply
                 enable a new or disabled account. Sending notification of account enabling events to
-                the system administrator and ISSO is one method for mitigating this risk. Such a
+                the system administrator and security officer is one method for mitigating this risk. Such a
                 capability greatly reduces the risk that application accessibility will be
                 negatively affected for extended periods of time and provides logging that can be
                 used for forensic purposes. To detect and respond to events that affect user
@@ -17,11 +17,11 @@ control 'SV-233158' do
                 access control functions and focus on core application features and
                 functionality.'
   desc 'check', 'Determine if the container platform is configured to notify system
-                    administrator and ISSO of account enabling actions. If the container platform is
-                    not configured to notify the SA and ISSO of account enabling actions, this is a
+                    administrator and security officer of account enabling actions. If the container platform is
+                    not configured to notify the SA and security officer of account enabling actions, this is a
                     finding.'
   desc 'fix', 'Configure the container platform to notify the SA
-                and ISSO of account enabling actions.'
+                and security officer of account enabling actions.'
   impact 0.5
   tag check_id: 'C-36094r981876_chk'
   tag severity: 'medium'

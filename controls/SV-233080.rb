@@ -10,7 +10,7 @@ control 'SV-233080' do
                 account is any information system account with authorizations of a non-privileged
                 user. Network access is any access to an application by a user (or process acting on
                 behalf of a user) where said access is obtained through a network connection.
-                Applications integrating with the DoD Active Directory and utilize the DoD CAC are
+                Applications integrating with the organization Active Directory and utilize the organization CAC are
                 examples of compliant multifactor authentication
                 solutions.'
   desc 'check', 'Review the container platform configuration to determine if the
