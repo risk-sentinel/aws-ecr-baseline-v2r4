@@ -47,7 +47,10 @@ inputs:
     value: aws                 # aws | aws-us-gov
   - name: assessed_repositories
     type: array
-    value: []                  # ECR repository names to assess; empty = all in-account repos
+    value: []                  # optional allowlist of ECR repo names; empty = all in-account repos
+  - name: excluded_repositories
+    type: array
+    value: []                  # repos to drop from scoring (e.g. third-party/archived); applied on top of the default account-wide scan
   - name: max_image_finding_severity
     type: string
     value: HIGH                # findings above this severity fail the vuln gate
