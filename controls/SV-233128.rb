@@ -1,53 +1,53 @@
 control 'SV-233128' do
-  title 'The container platform must prevent unauthorized and unintended information
-                transfer via shared system resources.'
-  desc 'The container platform makes host system resources
-                available to container services. These shared resources, such as the host system
-                kernel, network connections, and storage, must be protected to prevent unauthorized
-                and unintended information transfer. The protections must be implemented for users
-                and processes acting on behalf of users. This requirement also applies to Zero Trust
-                initiatives.'
-  desc 'check', 'Review the container platform architecture documentation to find out
-                    if and how it protects the resources of one process or user (such as working
-                    memory, storage, host system kernel, network connections) from unauthorized
-                    access by another user or process. If the container platform configuration
-                    settings do not effectively implement these protections to prevent unauthorized
-                    access by another user or process, this is a finding.'
-  desc 'fix', 'Deploy a container platform capable of effectively
-                protecting the resources of one process or user from unauthorized access by another
-                user or process. Configure the container platform to effectively protect the
-                resources of one process or user from unauthorized access by another user or
-                process. The container security solution should help the user understand where the
-                code in the environment was deployed from, and provide controls that prevent
-                deployment from untrusted sources or registries.'
-  impact 0.5
-  tag check_id: 'C-36064r601754_chk'
-  tag severity: 'medium'
-  tag gid: 'V-233128'
-  tag rid: 'SV-233128r1137645_rule'
-  tag stig_id: 'SRG-APP-000243-CTR-000600'
-  tag gtitle: 'SRG-APP-000243'
-  tag fix_id: 'F-36032r601862_fix'
-  tag 'documentable'
-  tag cci: ['CCI-001090']
-  tag nist: ['SC-4']
-  tag implementation_status: 'inherited'
-  tag inherited_from: 'aws-shared-responsibility'
+ title 'The container platform must prevent unauthorized and unintended information
+ transfer via shared system resources.'
+ desc 'The container platform makes host system resources
+ available to container services. These shared resources, such as the host system
+ kernel, network connections, and storage, must be protected to prevent unauthorized
+ and unintended information transfer. The protections must be implemented for users
+ and processes acting on behalf of users. This requirement also applies to Zero Trust
+ initiatives.'
+ desc 'check', 'Review the container platform architecture documentation to find out
+ if and how it protects the resources of one process or user (such as working
+ memory, storage, host system kernel, network connections) from unauthorized
+ access by another user or process. If the container platform configuration
+ settings do not effectively implement these protections to prevent unauthorized
+ access by another user or process, this is a finding.'
+ desc 'fix', 'Deploy a container platform capable of effectively
+ protecting the resources of one process or user from unauthorized access by another
+ user or process. Configure the container platform to effectively protect the
+ resources of one process or user from unauthorized access by another user or
+ process. The container security solution should help the user understand where the
+ code in the environment was deployed from, and provide controls that prevent
+ deployment from untrusted sources or registries.'
+ impact 0.5
+ tag check_id: 'C-36064r601754_chk'
+ tag severity: 'medium'
+ tag gid: 'V-233128'
+ tag rid: 'SV-233128r1137645_rule'
+ tag stig_id: 'SRG-APP-000243-CTR-000600'
+ tag gtitle: 'SRG-APP-000243'
+ tag fix_id: 'F-36032r601862_fix'
+ tag 'documentable'
+ tag cci: ['CCI-001090']
+ tag nist: ['SC-4']
+ tag implementation_status: 'inherited'
+ tag inherited_from: 'aws-shared-responsibility'
 
-  # AWS-managed: IAM identity internals / Fargate runtime / platform config (FedRAMP/DoD ATO).
-  ev = input('inherited_evidence_uri', value: '')
-  ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
-  max_age = input('leveraged_evidence_max_age_days', value: 365)
-  impact 0.5
-  if ev.to_s.empty?
-    describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
-    end
-  else
-    doc = document_attestation(ev, max_age_days: max_age)
-    describe "AWS authorization evidence (#{ev})" do
-      it('exists') { expect(doc.exists?).to eq(true) }
-      it('current') { expect(doc.current?(max_age)).to eq(true) }
-    end
-  end
+ # AWS-managed: IAM identity internals / Fargate runtime / platform config (the cloud-provider authorization).
+ ev = input('inherited_evidence_uri', value: '')
+ ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
+ max_age = input('leveraged_evidence_max_age_days', value: 365)
+ impact 0.5
+ if ev.to_s.empty?
+ describe 'AWS-inherited authorization evidence' do
+ skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
+ end
+ else
+ doc = document_attestation(ev, max_age_days: max_age)
+ describe "AWS authorization evidence (#{ev})" do
+ it('exists') { expect(doc.exists?).to eq(true) }
+ it('current') { expect(doc.current?(max_age)).to eq(true) }
+ end
+ end
 end

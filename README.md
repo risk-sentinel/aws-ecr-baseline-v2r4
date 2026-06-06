@@ -19,7 +19,7 @@ model — nothing is cherry-picked out; every requirement is dispositioned.
 | Status | Meaning |
 |---|---|
 | `implemented` | Asserted against AWS (Amazon ECR registry posture) |
-| `inherited` | Satisfied by the AWS-managed runtime / host / control plane (FedRAMP/DoD ATO); passes with evidence |
+| `inherited` | Satisfied by the AWS-managed runtime / host / control plane (the cloud-provider authorization); passes with evidence |
 | `not-applicable` | Out of scope for this deployment (rendered N/A with rationale) |
 | `alternative` | Governance/operational fact → SAF attestation |
 

@@ -20,7 +20,7 @@ summary: |
     permissions, lifecycle, encryption, image findings) — the primary
     automated coverage; the focus of this repo.
   - `inherited` — satisfied by the AWS-managed runtime, host OS, and
-    orchestrator control plane (AWS FedRAMP/DoD ATO); passes with evidence.
+    orchestrator control plane (AWS the cloud-provider authorization); passes with evidence.
   - `not-applicable` / `alternative` — deployment-/governance-specific
     requirements rendered N/A or carrying a SAF attestation.
 
@@ -28,7 +28,7 @@ summary: |
   `aws-ecs-fargate-baseline` separately re-validates the registry posture of
   the repos backing its own workloads (each profile stands alone).
 
-  Targets AWS Commercial (aws) and AWS GovCloud non-DoD (aws-us-gov);
+  Targets AWS Commercial (aws) and AWS GovCloud non-organization (aws-us-gov);
   behaviour tuned via inputs. Built for any consumer, not just SPARC.
 version: 0.1.0
 inspec_version: '>= 5.0'
@@ -65,7 +65,7 @@ inputs:
     value: []                  # account IDs whose ECR registries are approved image sources
   - name: leveraged_evidence_base
     type: string
-    value: ''  # base URI for the leveraged AWS FedRAMP/DoD authorization manifest (inherited evidence)
+    value: ''  # base URI for the leveraged the cloud-provider authorization manifest (inherited evidence)
   - name: inherited_evidence_uri
     type: string
     value: ''  # explicit override URI for the inherited-evidence manifest
@@ -74,4 +74,4 @@ inputs:
     value: 365
   - name: pw_min_length
     type: numeric
-    value: 15  # DoD minimum password length
+    value: 15  # organization minimum password length
