@@ -1,54 +1,54 @@
 control 'SV-233191' do
-  title 'The container platform must prevent component execution in accordance with
-                organization-defined policies regarding software program usage and restrictions,
-                and/or rules authorizing the terms and conditions of software program usage.'
-  desc "The container platform may offer components such as
-                DNS services, firewall services, router services, or web services that are not
-                required by every organization to meet their needs. Container platform components
-                may also add capabilities that run counter to the mission or that provide users with
-                functionality that exceeds mission requirements. To meet the requirements of an
-                organization, the container platform must have a method to remove or disable
-                components not required to meet the organization's
-                mission."
-  desc 'check', "Review documentation and configuration setting to determine if
-                    policies, rules, or restrictions exist regarding usage of container platform
-                    components. If no such no restrictions are in place, this is not a finding.
-                    Identify any components the organization requires to be disabled or removed and
-                    configure the container platform according to that policy. If the container
-                    platform components are not disabled or removed according to the organization's
-                    policy, this is a finding."
-  desc 'fix', "Configure the container platform so that any
-                platform components that are not required in order to meet the organization's
-                mission are disabled or removed. Document the components that must be disabled or
-                removed for reference."
-  impact 0.5
-  tag check_id: 'C-36127r601795_chk'
-  tag severity: 'medium'
-  tag gid: 'V-233191'
-  tag rid: 'SV-233191r961473_rule'
-  tag stig_id: 'SRG-APP-000384-CTR-000915'
-  tag gtitle: 'SRG-APP-000384'
-  tag fix_id: 'F-36095r601061_fix'
-  tag 'documentable'
-  tag cci: ['CCI-001764']
-  tag nist: ['CM-7 (2)']
-  tag implementation_status: 'inherited'
-  tag inherited_from: 'aws-shared-responsibility'
+ title 'The container platform must prevent component execution in accordance with
+ organization-defined policies regarding software program usage and restrictions,
+ and/or rules authorizing the terms and conditions of software program usage.'
+ desc "The container platform may offer components such as
+ DNS services, firewall services, router services, or web services that are not
+ required by every organization to meet their needs. Container platform components
+ may also add capabilities that run counter to the mission or that provide users with
+ functionality that exceeds mission requirements. To meet the requirements of an
+ organization, the container platform must have a method to remove or disable
+ components not required to meet the organization's
+ mission."
+ desc 'check', "Review documentation and configuration setting to determine if
+ policies, rules, or restrictions exist regarding usage of container platform
+ components. If no such no restrictions are in place, this is not a finding.
+ Identify any components the organization requires to be disabled or removed and
+ configure the container platform according to that policy. If the container
+ platform components are not disabled or removed according to the organization's
+ policy, this is a finding."
+ desc 'fix', "Configure the container platform so that any
+ platform components that are not required in order to meet the organization's
+ mission are disabled or removed. Document the components that must be disabled or
+ removed for reference."
+ impact 0.5
+ tag check_id: 'C-36127r601795_chk'
+ tag severity: 'medium'
+ tag gid: 'V-233191'
+ tag rid: 'SV-233191r961473_rule'
+ tag stig_id: 'SRG-APP-000384-CTR-000915'
+ tag gtitle: 'SRG-APP-000384'
+ tag fix_id: 'F-36095r601061_fix'
+ tag 'documentable'
+ tag cci: ['CCI-001764']
+ tag nist: ['CM-7 (2)']
+ tag implementation_status: 'inherited'
+ tag inherited_from: 'aws-shared-responsibility'
 
-  # AWS-managed: IAM identity internals / Fargate runtime / platform config (the cloud-provider authorization).
-  ev = input('inherited_evidence_uri', value: '')
-  ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
-  max_age = input('leveraged_evidence_max_age_days', value: 365)
-  impact 0.5
-  if ev.to_s.empty?
-    describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
-    end
-  else
-    doc = document_attestation(ev, max_age_days: max_age)
-    describe "AWS authorization evidence (#{ev})" do
-      it('exists') { expect(doc.exists?).to eq(true) }
-      it('current') { expect(doc.current?(max_age)).to eq(true) }
-    end
-  end
+ # AWS-managed: IAM identity internals / Fargate runtime / platform config (the cloud-provider authorization).
+ ev = input('inherited_evidence_uri', value: '')
+ ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
+ max_age = input('leveraged_evidence_max_age_days', value: 365)
+ impact 0.5
+ if ev.to_s.empty?
+ describe 'AWS-inherited authorization evidence' do
+ skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
+ end
+ else
+ doc = document_attestation(ev, max_age_days: max_age)
+ describe "AWS authorization evidence (#{ev})" do
+ it('exists') { expect(doc.exists?).to eq(true) }
+ it('current') { expect(doc.current?(max_age)).to eq(true) }
+ end
+ end
 end

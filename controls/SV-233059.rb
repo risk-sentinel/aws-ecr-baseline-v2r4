@@ -1,50 +1,50 @@
 control 'SV-233059' do
-  title 'The container platform must protect audit tools from unauthorized access.'
-  desc 'Protecting audit data also includes identifying and
-                protecting the tools used to view and manipulate log data. Therefore, protecting
-                audit tools is necessary to prevent unauthorized operation on audit data.
-                Applications providing tools to interface with audit data will leverage user
-                permissions and roles identifying the user accessing the tools and the corresponding
-                rights the user enjoys in order to make access decisions regarding the access to
-                audit tools. Audit tools include, but are not limited to, vendor-provided and open
-                source audit tools needed to successfully view and manipulate audit information
-                system activity and records. Audit tools include custom queries and report
-                generators.'
-  desc 'check', 'Review the container platform to validate container platform audit
-                    tools are protected from unauthorized access. If the audit tools are not
-                    protected from unauthorized access, this is a finding.'
-  desc 'fix', 'Configure the container platform to protect audit
-                tools from unauthorized access.'
-  impact 0.5
-  tag check_id: 'C-35995r600664_chk'
-  tag severity: 'medium'
-  tag gid: 'V-233059'
-  tag rid: 'SV-233059r960939_rule'
-  tag stig_id: 'SRG-APP-000121-CTR-000255'
-  tag gtitle: 'SRG-APP-000121'
-  tag fix_id: 'F-35963r600665_fix'
-  tag 'documentable'
-  tag cci: ['CCI-001493']
-  tag nist: ['AU-9 a']
-  tag implementation_status: 'inherited'
-  tag inherited_from: 'aws-shared-responsibility'
+ title 'The container platform must protect audit tools from unauthorized access.'
+ desc 'Protecting audit data also includes identifying and
+ protecting the tools used to view and manipulate log data. Therefore, protecting
+ audit tools is necessary to prevent unauthorized operation on audit data.
+ Applications providing tools to interface with audit data will leverage user
+ permissions and roles identifying the user accessing the tools and the corresponding
+ rights the user enjoys in order to make access decisions regarding the access to
+ audit tools. Audit tools include, but are not limited to, vendor-provided and open
+ source audit tools needed to successfully view and manipulate audit information
+ system activity and records. Audit tools include custom queries and report
+ generators.'
+ desc 'check', 'Review the container platform to validate container platform audit
+ tools are protected from unauthorized access. If the audit tools are not
+ protected from unauthorized access, this is a finding.'
+ desc 'fix', 'Configure the container platform to protect audit
+ tools from unauthorized access.'
+ impact 0.5
+ tag check_id: 'C-35995r600664_chk'
+ tag severity: 'medium'
+ tag gid: 'V-233059'
+ tag rid: 'SV-233059r960939_rule'
+ tag stig_id: 'SRG-APP-000121-CTR-000255'
+ tag gtitle: 'SRG-APP-000121'
+ tag fix_id: 'F-35963r600665_fix'
+ tag 'documentable'
+ tag cci: ['CCI-001493']
+ tag nist: ['AU-9 a']
+ tag implementation_status: 'inherited'
+ tag inherited_from: 'aws-shared-responsibility'
 
-  # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
-  # infra). Evidence = the leveraged the cloud-provider authorization manifest; Skip (not a
-  # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
-  ev = input('inherited_evidence_uri', value: '')
-  ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
-  max_age = input('leveraged_evidence_max_age_days', value: 365)
-  impact 0.5
-  if ev.to_s.empty?
-    describe 'AWS-inherited authorization evidence' do
-      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
-    end
-  else
-    doc = document_attestation(ev, max_age_days: max_age)
-    describe "AWS authorization evidence (#{ev})" do
-      it('exists')  { expect(doc.exists?).to eq(true) }
-      it('current') { expect(doc.current?(max_age)).to eq(true) }
-    end
-  end
+ # AWS-managed container-platform layer (runtime/host/control-plane/crypto-module/audit-
+ # infra). Evidence = the leveraged the cloud-provider authorization manifest; Skip (not a
+ # vacuous pass) until the consumer configures leveraged_evidence_base/inherited_evidence_uri.
+ ev = input('inherited_evidence_uri', value: '')
+ ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
+ max_age = input('leveraged_evidence_max_age_days', value: 365)
+ impact 0.5
+ if ev.to_s.empty?
+ describe 'AWS-inherited authorization evidence' do
+ skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base / inherited_evidence_uri to the cloud-provider authorization manifest, or supply a SAF attestation.'
+ end
+ else
+ doc = document_attestation(ev, max_age_days: max_age)
+ describe "AWS authorization evidence (#{ev})" do
+ it('exists') { expect(doc.exists?).to eq(true) }
+ it('current') { expect(doc.current?(max_age)).to eq(true) }
+ end
+ end
 end
