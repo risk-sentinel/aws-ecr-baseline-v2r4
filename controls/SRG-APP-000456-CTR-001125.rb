@@ -50,4 +50,16 @@ control 'SRG-APP-000456-CTR-001125' do
   tag 'documentable'
   tag cci: ['CCI-002605']
   tag nist: ['SI-2 c']
+  tag implementation_status: 'implemented'
+
+  # Registry-layer ECR assertion (scan-on-push surfaces CVEs so images stay current); account-wide, scoped via assessed_repositories.
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe aws_ecr_repository(repository_name: name) do
+      it { should be_scan_on_push }
+    end
+  end
 end

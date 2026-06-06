@@ -29,4 +29,17 @@ control 'SRG-APP-000378-CTR-000890' do
   tag 'documentable'
   tag cci: ['CCI-003980']
   tag nist: ['CM-11 (2)']
+  tag implementation_status: 'implemented'
+  tag fsbp: 'ECR.2'
+
+  # Registry-layer ECR assertion (tag immutability); account-wide, scoped via assessed_repositories.
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe aws_ecr_repository(repository_name: name) do
+      it { should be_immutable }
+    end
+  end
 end

@@ -29,4 +29,16 @@ control 'SRG-APP-000033-CTR-000090' do
   tag 'documentable'
   tag cci: ['CCI-000213']
   tag nist: ['AC-3']
+  tag implementation_status: 'implemented'
+
+  # Registry-layer ECR assertion (least-privilege registry access); account-wide, scoped via assessed_repositories.
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  repos.each do |name|
+    describe aws_ecr_repository(repository_name: name) do
+      it { should_not be_policy_allows_external }
+    end
+  end
 end
