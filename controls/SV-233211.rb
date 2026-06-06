@@ -1,6 +1,6 @@
 control 'SV-233211' do
  title 'The container platform must implement approved cryptography to protect
- classified information in accordance with applicable federal laws, Executive Orders,
+ sensitive information in accordance with applicable federal laws, Executive Orders,
  directives, policies, regulations, and standards.'
  desc 'Use of weak or untested encryption algorithms
  undermines the purposes of utilizing encryption to protect data and images. The
@@ -9,11 +9,11 @@ control 'SV-233211' do
  been tested and
  validated.'
  desc 'check', 'Review documentation to verify that the container platform is using
- approved cryptography to protect classified data and applications. If the
- container platform is not using approved cryptography for classified data
+ approved cryptography to protect sensitive data and applications. If the
+ container platform is not using approved cryptography for sensitive data
  and applications, this is a finding.'
  desc 'fix', 'Configure the container platform to utilize
- approved cryptography to protect classified information.'
+ approved cryptography to protect sensitive information.'
  impact 0.5
  tag check_id: 'C-36147r601811_chk'
  tag severity: 'medium'

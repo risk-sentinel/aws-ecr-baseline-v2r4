@@ -1,19 +1,19 @@
 control 'SV-233073' do
  title 'The container platform runtime must enforce ports, protocols, and services that
- adhere to the PPSM CAL.'
+ adhere to the approved ports, protocols, and services (PPS) baseline.'
  desc 'Ports, protocols, and services within the container
- platform runtime must be controlled and conform to the PPSM CAL. Those ports,
- protocols, and services that fall outside the PPSM CAL must be blocked by the
- runtime. Instructions on the PPSM can be found in organization Instruction 8551.01
+ platform runtime must be controlled and conform to the approved ports, protocols, and services (PPS) baseline. Those ports,
+ protocols, and services that fall outside the approved ports, protocols, and services (PPS) baseline must be blocked by the
+ runtime. Instructions on the ports, protocols, and services (PPS) policy can be found in organization Instruction 8551.01
  Policy.'
  desc 'check', 'Review the container platform documentation and deployment
  configuration to determine which ports and protocols are enabled. Verify the
- ports and protocols being used are not prohibited by PPSM CAL in accordance to
+ ports and protocols being used are not prohibited by approved ports, protocols, and services (PPS) baseline in accordance to
  organization Instruction 8551.01 Policy and are necessary for the operations and
  applications. If any of the ports or protocols is prohibited or not necessary
  for the operation, this is a finding.'
  desc 'fix', 'Configure the container platform to disable any
- ports or protocols that are prohibited by the PPSM CAL and not necessary for the
+ ports or protocols that are prohibited by the approved ports, protocols, and services (PPS) baseline and not necessary for the
  operation.'
  impact 0.5
  tag check_id: 'C-36009r601891_chk'

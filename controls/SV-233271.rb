@@ -11,7 +11,7 @@ control 'SV-233271' do
  unprotected plaintext. If the agency specifies that the information or data be
  cryptographically protected, then FIPS 140-2/140-3 is applicable. In essence, if
  cryptography is required, it must be validated. Cryptographic modules that have been
- approved for classified use may be used in lieu of modules that have been validated
+ approved for sensitive use may be used in lieu of modules that have been validated
  against the FIPS 140-2/140-3 standard. This requirement also applies to Zero Trust
  initiatives.'
  desc 'check', 'Review the container platform configuration to validate that valid

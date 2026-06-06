@@ -15,8 +15,8 @@ control 'SV-233190' do
  system, this is a finding.'
  desc 'fix', 'Configure the container platform to only utilize
  secure ports and protocols required for operation that have been accepted for use as
- per the Ports, Protocols, and Services Category Assignments List (CAL) from DISA
- (PPSM).'
+ per the Ports, Protocols, and Services Category Assignments List (PPS baseline) from DISA
+ (ports, protocols, and services (PPS) management).'
  impact 0.5
  tag check_id: 'C-36126r601057_chk'
  tag severity: 'medium'

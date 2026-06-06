@@ -3,9 +3,9 @@ control 'SV-233290' do
  transmit unencrypted authentication information or use flawed cryptographic
  algorithms for transmission.'
  desc 'The use of secure ports, protocols and services
- within the container platform must be controlled and conform to the PPSM CAL. Those
- ports, protocols, and services that fall outside the PPSM CAL must be blocked by the
- runtime. Instructions on the PPSM can be found in organization Instruction 8551.01 Policy.
+ within the container platform must be controlled and conform to the approved ports, protocols, and services (PPS) baseline. Those
+ ports, protocols, and services that fall outside the approved ports, protocols, and services (PPS) baseline must be blocked by the
+ runtime. Instructions on the ports, protocols, and services (PPS) policy can be found in organization Instruction 8551.01 Policy.
  Unsecure protocols for transmission will expose the information system data and
  information, making the session susceptible to manipulation, hijacking, and
  man-in-the middle

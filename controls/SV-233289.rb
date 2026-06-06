@@ -1,13 +1,13 @@
 control 'SV-233289' do
  title 'The container platform must use a FIPS-validated cryptographic module to
- implement encryption services for unclassified information requiring
+ implement encryption services for information requiring
  confidentiality.'
  desc 'Unvalidated cryptography is viewed by NIST as
  providing no protection to the information or data. In effect, the data would be
  considered unprotected plaintext. If the agency specifies that the information or
  data be cryptographically protected, then FIPS 140-2/140-3 is applicable. In
  essence, if cryptography is required, it must be validated. Cryptographic modules
- that have been approved for classified use may be used in lieu of modules that have
+ that have been approved for sensitive use may be used in lieu of modules that have
  been validated against the FIPS 140-2/140-3 standard. The cryptographic module used
  must have one FIPS-validated encryption algorithm (i.e., validated Advanced
  Encryption Standard [AES]). This validated algorithm must be used for encryption for
@@ -16,11 +16,11 @@ control 'SV-233289' do
  requirement also applies to Zero Trust
  initiatives.'
  desc 'check', 'Review the container platform configuration to ensure FIPS-validated
- cryptographic modules are implemented to encrypt unclassified information
+ cryptographic modules are implemented to encrypt information
  requiring confidentiality. If FIPS-validated cryptographic modules are not being
  used, this is a finding.'
  desc 'fix', 'Configure the container platform to use
- FIPS-validated cryptographic modules to encrypt unclassified information requiring
+ FIPS-validated cryptographic modules to encrypt information requiring
  confidentiality.'
  impact 0.7
  tag check_id: 'C-36225r601354_chk'

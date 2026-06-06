@@ -8,7 +8,7 @@ control 'SV-233195' do
  reduce the risks of unauthorized access, the use of multifactor token-based
  credentials is the preferred method. organization has mandated the use of the CAC to support
  identity management and personal authentication for systems covered under HSPD 12,
- as well as a primary component of layered protection for national security
+ as well as a primary component of layered protection for organizational security
  systems.'
  desc 'check', 'Review documentation and configuration to ensure the container
  platform is configured to use an approved organization multifactor token (CAC) when
