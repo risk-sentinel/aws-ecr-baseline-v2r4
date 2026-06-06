@@ -28,4 +28,17 @@ control 'SV-233210' do
   tag 'documentable'
   tag cci: ['CCI-001067']
   tag nist: ['RA-5 (5)']
+  tag implementation_status: 'implemented'
+  tag fsbp: 'ECR.1'
+
+  # Registry-layer: enhanced (Amazon Inspector) scanning provides the comprehensive,
+  # privileged OS + language-package vulnerability scan of all image components, vs the
+  # limited BASIC scan. Registry-wide setting; N/A when no ECR repositories are in scope.
+  repos = ecr_repos_in_scope
+  impact 0.0 if repos.empty?
+  only_if('No ECR repositories in scope') { !repos.empty? }
+
+  describe aws_ecr_registry_scanning do
+    it { should be_enhanced }
+  end
 end
