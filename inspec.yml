@@ -72,3 +72,6 @@ inputs:
   - name: leveraged_evidence_max_age_days
     type: numeric
     value: 365
+  - name: pw_min_length
+    type: numeric
+    value: 15  # DoD minimum password length

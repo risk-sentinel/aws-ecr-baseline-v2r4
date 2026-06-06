@@ -27,4 +27,11 @@ control 'SV-233088' do
   tag 'documentable'
   tag cci: ['CCI-004066']
   tag nist: ['IA-5 (1) (h)']
+  tag implementation_status: 'implemented'
+
+  minlen = input('pw_min_length', value: 15)
+  impact 0.5
+  describe aws_iam_password_policy do
+    its('minimum_password_length') { should be >= minlen }
+  end
 end

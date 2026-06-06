@@ -26,4 +26,23 @@ control 'SV-233097' do
   tag 'documentable'
   tag cci: ['CCI-004066']
   tag nist: ['IA-5 (1) (h)']
+  tag implementation_status: 'inherited'
+  tag inherited_from: 'aws-shared-responsibility'
+
+  # AWS IAM has no minimum-password-age control; password lifecycle internals are AWS-managed.
+  ev = input('inherited_evidence_uri', value: '')
+  ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
+  max_age = input('leveraged_evidence_max_age_days', value: 365)
+  impact 0.5
+  if ev.to_s.empty?
+    describe 'AWS-inherited authorization evidence' do
+      skip 'inherited-from-aws: IAM password-age internals are AWS-managed; set leveraged_evidence_base/inherited_evidence_uri or supply a SAF attestation.'
+    end
+  else
+    doc = document_attestation(ev, max_age_days: max_age)
+    describe "AWS authorization evidence (#{ev})" do
+      it('exists') { expect(doc.exists?).to eq(true) }
+      it('current') { expect(doc.current?(max_age)).to eq(true) }
+    end
+  end
 end

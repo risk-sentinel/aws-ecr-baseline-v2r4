@@ -35,4 +35,12 @@ control 'SV-263589' do
   tag 'documentable'
   tag cci: ['CCI-004046']
   tag nist: ['IA-2 (6) (a)']
+  tag implementation_status: 'implemented'
+
+  # MFA: AWS IAM root account MFA (the readily-assertable signal; per-user MFA needs the
+  # credential report — not exposed by inspec-aws). Consumer MFA hygiene = cis-aws-foundations.
+  impact 0.5
+  describe aws_iam_root_user do
+    it { should have_mfa_enabled }
+  end
 end
