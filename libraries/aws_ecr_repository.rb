@@ -143,6 +143,45 @@ class AwsEcrRepository < AwsResourceBase
     end.map { |im| im[:tags].first || im[:digest] }
   end
 
+  SBOM_MEDIA = /spdx|cyclonedx|in-toto|\bsbom\b|bom/i.freeze
+
+  # Images missing a signature and/or an SBOM referrer (supply-chain gaps). Fail-closed:
+  # an unsigned image, or one without an attached SBOM, is a gap. Returns labels.
+  def supply_chain_gaps
+    images.map do |im|
+      miss = []
+      miss << "unsigned" unless image_signed?(im[:digest])
+      miss << "no-SBOM"  unless image_has_sbom?(im[:digest])
+      miss.empty? ? nil : "#{im[:tags].first || im[:digest][0, 16]}: #{miss.join('+')}"
+    end.compact
+  end
+
+  private
+
+  def image_signed?(digest)
+    !Array(@aws.ecr_client.describe_image_signing_status(
+      repository_name: @repository_name, image_id: { image_digest: digest }
+    ).signing_statuses).empty?
+  rescue StandardError
+    false
+  end
+
+  def image_has_sbom?(digest)
+    refs = []
+    token = nil
+    loop do
+      resp = @aws.ecr_client.list_image_referrers(repository_name: @repository_name, subject_id: { image_digest: digest }, next_token: token)
+      refs.concat(Array(resp.referrers))
+      token = resp.next_token
+      break if token.nil? || token.to_s.empty?
+    end
+    refs.any? { |r| %i[artifact_media_type artifact_type media_type].any? { |m| r.respond_to?(m) && r.public_send(m).to_s =~ SBOM_MEDIA } }
+  rescue StandardError
+    false
+  end
+
+  public
+
   def to_s
     "ECR Repository #{@repository_name}"
   end
