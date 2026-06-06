@@ -31,4 +31,23 @@ control 'SV-233128' do
   tag 'documentable'
   tag cci: ['CCI-001090']
   tag nist: ['SC-4']
+  tag implementation_status: 'inherited'
+  tag inherited_from: 'aws-shared-responsibility'
+
+  # AWS-managed: IAM identity internals / Fargate runtime / platform config (FedRAMP/DoD ATO).
+  ev = input('inherited_evidence_uri', value: '')
+  ev = attestation_uri(:leveraged, 'aws-container-platform-authorization', ext: 'json') if ev.to_s.empty?
+  max_age = input('leveraged_evidence_max_age_days', value: 365)
+  impact 0.5
+  if ev.to_s.empty?
+    describe 'AWS-inherited authorization evidence' do
+      skip 'inherited-from-aws: AWS-managed layer; set leveraged_evidence_base/inherited_evidence_uri to the AWS FedRAMP/DoD authorization manifest, or supply a SAF attestation.'
+    end
+  else
+    doc = document_attestation(ev, max_age_days: max_age)
+    describe "AWS authorization evidence (#{ev})" do
+      it('exists') { expect(doc.exists?).to eq(true) }
+      it('current') { expect(doc.current?(max_age)).to eq(true) }
+    end
+  end
 end

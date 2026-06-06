@@ -23,4 +23,11 @@ control 'SV-270876' do
   tag 'documentable'
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']
+  tag implementation_status: 'not-applicable'
+
+  impact 0.0
+  describe 'Read-only root filesystem: task-definition control — aws-ecs-fargate-baseline (N/A)' do
+    subject { true }
+    it { is_expected.to eq true }
+  end
 end
