@@ -1,4 +1,4 @@
-name: aws-ecr-v2r4
+name: stig-aws-ecr-v2r4
 title: AWS Container Platform Baseline (DISA Container Platform SRG V2R4)
 maintainer: Risk Sentinel
 copyright: Risk Sentinel
