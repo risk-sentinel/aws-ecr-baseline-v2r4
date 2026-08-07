@@ -109,11 +109,24 @@ class AwsEcrRepository < AwsResourceBase
   def images
     return @images if defined?(@images)
     @images = []
+    @all_tags = []
     catch_aws_errors do
       next_token = nil
       loop do
         resp = @aws.ecr_client.describe_images(repository_name: @repository_name, next_token: next_token, max_results: 100)
         Array(resp.image_details).each do |d|
+          # Every imageDetail's tags are collected FIRST — cosign pushes
+          # signatures and attestations as separate TAGGED artifacts in this
+          # same repository, and those tags are how a signature is detected
+          # (see image_signed?). Skipping them here would discard the evidence.
+          @all_tags.concat(Array(d.image_tags))
+
+          # ...but a signature is not an image. artifactMediaType is non-null
+          # ONLY for OCI artifacts that are not images (cosign signatures,
+          # attestations, SBOMs). Including them made every signature report as
+          # an unsigned image, and counted each as unscanned in the scan gate.
+          next unless d.respond_to?(:artifact_media_type) && d.artifact_media_type.to_s.empty?
+
           summary = d.image_scan_findings_summary
           @images << {
             digest:          d.image_digest,
@@ -127,6 +140,12 @@ class AwsEcrRepository < AwsResourceBase
       end
     end
     @images
+  end
+
+  # Every tag in the repository, including those on non-image artifacts.
+  def all_tags
+    images # populates @all_tags as a side effect of the single DescribeImages pass
+    @all_tags || []
   end
 
   # Image digests/tags that violate the scan gate: fail-closed — an image whose scan is
@@ -156,17 +175,65 @@ class AwsEcrRepository < AwsResourceBase
     end.compact
   end
 
+  # Images whose supply-chain state could NOT be determined — an API error, a
+  # denied permission, a throttle. Deliberately separate from supply_chain_gaps:
+  # "cannot determine" is not "non-compliant" (#11). Folding the two together
+  # made an IAM denial indistinguishable from an unsigned image, so the control
+  # was untrustworthy in both directions.
+  def supply_chain_undetermined
+    images.map do |im|
+      reasons = []
+      reasons << "signing: #{@signing_error}" if signing_undetermined?(im[:digest])
+      reasons << "sbom: #{@sbom_error}"       if sbom_undetermined?(im[:digest])
+      reasons.empty? ? nil : "#{im[:tags].first || im[:digest][0, 16]}: #{reasons.join('; ')}"
+    end.compact
+  end
+
   private
 
-  def image_signed?(digest)
+  # cosign's DEFAULT scheme: the signature for sha256:X is pushed as a separate
+  # artifact tagged `sha256-X.sig` in the SAME repository. The referrers API is
+  # opt-in, and AWS-native signing (Signer/Notation) is a different mechanism
+  # again — so all three are checked and any one of them counts as signed.
+  def cosign_tag_for(digest, suffix)
+    "sha256-#{digest.to_s.delete_prefix('sha256:')}.#{suffix}"
+  end
+
+  def cosign_signed?(digest)
+    all_tags.include?(cosign_tag_for(digest, "sig"))
+  end
+
+  def cosign_attested?(digest)
+    %w[att sbom].any? { |s| all_tags.include?(cosign_tag_for(digest, s)) }
+  end
+
+  def native_signed?(digest)
+    @signing_error = nil
     !Array(@aws.ecr_client.describe_image_signing_status(
       repository_name: @repository_name, image_id: { image_digest: digest }
     ).signing_statuses).empty?
-  rescue StandardError
+  rescue StandardError => e
+    @signing_error = e.class.name
     false
   end
 
-  def image_has_sbom?(digest)
+  def image_signed?(digest)
+    # Cheapest and most likely first: cosign tags come from the DescribeImages
+    # pass already made, so this costs no API call and needs no extra grant.
+    return true if cosign_signed?(digest)
+    native_signed?(digest)
+  end
+
+  # True only when NO signature was found by any mechanism AND the one that
+  # makes an API call errored — i.e. the answer is unknown rather than "no".
+  def signing_undetermined?(digest)
+    return false if cosign_signed?(digest)
+    native_signed?(digest)
+    !@signing_error.nil?
+  end
+
+  def referrer_sbom?(digest)
+    @sbom_error = nil
     refs = []
     token = nil
     loop do
@@ -176,8 +243,20 @@ class AwsEcrRepository < AwsResourceBase
       break if token.nil? || token.to_s.empty?
     end
     refs.any? { |r| %i[artifact_media_type artifact_type media_type].any? { |m| r.respond_to?(m) && r.public_send(m).to_s =~ SBOM_MEDIA } }
-  rescue StandardError
+  rescue StandardError => e
+    @sbom_error = e.class.name
     false
+  end
+
+  def image_has_sbom?(digest)
+    return true if cosign_attested?(digest)
+    referrer_sbom?(digest)
+  end
+
+  def sbom_undetermined?(digest)
+    return false if cosign_attested?(digest)
+    referrer_sbom?(digest)
+    !@sbom_error.nil?
   end
 
   public
