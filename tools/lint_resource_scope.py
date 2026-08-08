@@ -34,15 +34,55 @@ RESOURCE = re.compile(r"\baws_[a-z0-9_]+\(")
 # A block opener: a trailing `do` (with optional |args|), or a keyword that
 # opens a block needing `end`. Anchored at line start so a MODIFIER form
 # (`impact 0.0 if repos.empty?`) does not push a frame.
-DO_BLOCK = re.compile(r"\bdo\b\s*(\|[^|]*\|)?\s*$")
+# The optional block-args group absorbs its own leading whitespace, so there
+# are never two adjacent variable-length matchers to backtrack between. `[ \t]`
+# rather than `\s` because this is matched per-line.
+DO_BLOCK = re.compile(r"\bdo\b(?:[ \t]*\|[^|]*\|)?[ \t]*$")
 KEYWORD_BLOCK = re.compile(r"^(if|unless|case|begin|def|class|module|while|until)\b")
 END = re.compile(r"^end\b")
 DESCRIBE = re.compile(r"^(describe|context)\b")
 DEFERRED = re.compile(r"^(it|its|subject|before|after|let|let!|specify|example)\b")
 
+DESCRIBE_FRAME = "describe"
+DEFERRED_FRAME = "deferred"
+OTHER_FRAME = "other"
+
+
+def _classify(line: str) -> str:
+    """Which kind of frame this line would open, if it opens one."""
+    if DESCRIBE.match(line):
+        return DESCRIBE_FRAME
+    if DEFERRED.match(line):
+        return DEFERRED_FRAME
+    return OTHER_FRAME
+
+
+def _opens_block(line: str) -> bool:
+    return bool(DO_BLOCK.search(line)) or bool(KEYWORD_BLOCK.match(line))
+
+
+def _in_describe_body(stack) -> bool:
+    """True when the innermost enclosing example group is a describe.
+
+    A deferred frame (it/subject/let) between here and the describe means the
+    code runs inside an EXAMPLE, where resources are available.
+    """
+    for frame in reversed(stack):
+        if frame == DEFERRED_FRAME:
+            return False
+        if frame == DESCRIBE_FRAME:
+            return True
+    return False
+
+
+def _is_violation(line: str, kind: str, stack) -> bool:
+    # A resource on the `describe ... do` line is an ARGUMENT — legal.
+    # A resource on an it/subject/let line is deferred — legal.
+    return kind == OTHER_FRAME and _in_describe_body(stack) and bool(RESOURCE.search(line))
+
 
 def violations(path: Path):
-    stack = []          # frame kinds: 'describe' | 'deferred' | 'other'
+    stack = []
     out = []
 
     for lineno, raw in enumerate(path.read_text().splitlines(), 1):
@@ -50,32 +90,13 @@ def violations(path: Path):
         if not line or line.startswith("#"):
             continue
 
-        opens = bool(DO_BLOCK.search(line)) or bool(KEYWORD_BLOCK.match(line))
-
-        if DESCRIBE.match(line):
-            kind = "describe"
-        elif DEFERRED.match(line):
-            kind = "deferred"
-        else:
-            kind = "other"
-
-        # In a describe body unless something deferred intervenes above it.
-        in_group = False
-        for frame in reversed(stack):
-            if frame == "deferred":
-                break
-            if frame == "describe":
-                in_group = True
-                break
-
-        # A resource on the `describe ... do` line is an ARGUMENT — legal.
-        # A resource on an it/subject/let line is deferred — legal.
-        if in_group and kind == "other" and RESOURCE.search(line):
+        kind = _classify(line)
+        if _is_violation(line, kind, stack):
             out.append((lineno, line))
 
         if END.match(line) and stack:
             stack.pop()
-        elif opens:
+        elif _opens_block(line):
             stack.append(kind)
 
     return out
