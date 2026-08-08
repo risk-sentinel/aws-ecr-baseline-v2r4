@@ -40,4 +40,22 @@ control 'SV-233275' do
  it { should be_scan_on_push }
  end
  end
+
+ # scan-on-push alone does NOT satisfy this control's own requirement. It is a
+ # point-in-time scan: an image scanned clean at push is never re-evaluated
+ # against CVEs disclosed afterwards, even while it is still deployed. The
+ # control title says "continuously scan"; only CONTINUOUS_SCAN delivers that.
+ describe aws_ecr_registry_scanning do
+ it { should be_continuous }
+ end
+
+ # Enhanced scanning can be enabled while its rules cover only some
+ # repositories. An uncovered repository is never scanned, and an unscanned
+ # repository produces no findings — indistinguishable from a clean one.
+ # Note ECR filter wildcards are anchored: `foo-*` does not match `foo`.
+ uncovered = aws_ecr_registry_scanning.repositories_not_covered(repos)
+ describe "ECR scanning rule coverage of in-scope repositories (#{repos.length} in scope)" do
+ subject { uncovered }
+ it { should be_empty }
+ end
 end
