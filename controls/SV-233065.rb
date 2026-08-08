@@ -40,5 +40,14 @@ control 'SV-233065' do
  subject { aws_ecr_repository(repository_name: name).supply_chain_gaps }
  it { should be_empty }
  end
+
+ # Surfaced separately on purpose (#11). An API error — a denied
+ # ecr:ListImageReferrers, a throttle — must never present as "unsigned".
+ # Without this the two are indistinguishable, and the check above cannot be
+ # believed in either direction: not when it fails, and not when it passes.
+ describe "Image supply-chain determinable for #{name} (no API errors)" do
+ subject { aws_ecr_repository(repository_name: name).supply_chain_undetermined }
+ it { should be_empty }
+ end
  end
 end
