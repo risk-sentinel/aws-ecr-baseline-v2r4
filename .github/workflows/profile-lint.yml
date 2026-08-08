@@ -43,11 +43,26 @@ jobs:
           [ "$fail" = 0 ] || exit 1
           echo "All control and library files parse."
 
+      # `vendor/` is gitignored, so a fresh checkout has no dependencies and
+      # `check` fails before evaluating anything. Locally this is invisible —
+      # a stale vendor/ from earlier work makes it pass.
+      - name: Vendor dependencies
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work "${AUDITOR_IMAGE}" vendor . --overwrite
+
       - name: cinc-auditor check
         run: |
           set -uo pipefail
-          out=$(docker run --rm -v "$PWD:/work" -w /work "${AUDITOR_IMAGE}" check . 2>&1)
+          # Capture the exit code rather than letting `bash -e` abort here: the
+          # first version of this step died on the docker call BEFORE echoing
+          # $out, so a failing check produced no diagnostic at all — the guard
+          # hid its own evidence.
+          out=$(docker run --rm -v "$PWD:/work" -w /work "${AUDITOR_IMAGE}" check . 2>&1) && rc=0 || rc=$?
           echo "$out"
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::cinc-auditor check exited ${rc} — see output above."
+            exit 1
+          fi
           echo "$out" | grep -q "Valid : *true" || { echo "::error::profile did not validate"; exit 1; }
           # A profile that loads ZERO controls validates happily. Assert the
           # count is non-zero so an empty or wrongly-scoped profile is caught.
@@ -57,7 +72,12 @@ jobs:
 
       - name: cinc-auditor json (catches load-time errors check misses)
         run: |
-          docker run --rm -v "$PWD:/work" -w /work "${AUDITOR_IMAGE}" json . > /tmp/profile.json
+          set -uo pipefail
+          out=$(docker run --rm -v "$PWD:/work" -w /work "${AUDITOR_IMAGE}" json . 2>/tmp/json.err) && rc=0 || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::cinc-auditor json exited ${rc}"; cat /tmp/json.err; exit 1
+          fi
+          echo "$out" > /tmp/profile.json
           jq -e '.controls | length > 0' /tmp/profile.json > /dev/null \
             || { echo "::error::json produced no controls"; exit 1; }
           echo "json loaded $(jq '.controls | length' /tmp/profile.json) controls"

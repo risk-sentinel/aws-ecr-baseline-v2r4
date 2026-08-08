@@ -44,3 +44,7 @@ docker run --rm -v "$PWD:/work" -w /work risksentinel/sparc-auditor:<tag> check 
 docker run --rm -v "$PWD:/work" -w /work risksentinel/sparc-auditor:<tag> json .
 # exec requires AWS credentials (-t aws://) and read-only ECR grants
 ```
+
+---
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=risk-sentinel_aws-ecr-baseline-v2r4)](https://sonarcloud.io/summary/new_code?id=risk-sentinel_aws-ecr-baseline-v2r4)
