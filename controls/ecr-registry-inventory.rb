@@ -20,6 +20,17 @@ control 'ecr-registry-inventory' do
  excluded = excluded_repositories_list
  in_scope = ecr_repos_in_scope
 
+ # Resolved HERE, at control-body scope. An InSpec resource cannot be called
+ # from inside a `describe` block — RSpec raises WrongScopeError, because a
+ # describe body is an example GROUP, not an example. Resources are only
+ # available at control scope (as above) or inside an `it`/`before`/`let`.
+ # `check` and `json` do not evaluate control bodies, so this only surfaces on
+ # a real exec (#11).
+ orphans_by_repo = in_scope.sort.each_with_object({}) do |name, acc|
+ found = aws_ecr_repository(repository_name: name).orphan_supply_chain_artifacts
+ acc[name] = found unless found.empty?
+ end
+
  describe 'ECR registry inventory' do
  if all_repos.empty?
  it('no ECR repositories found in this account/region') { expect(true).to eq true }
@@ -39,8 +50,8 @@ control 'ecr-registry-inventory' do
  # provenance metadata, not a compliance failure — but it must be VISIBLE,
  # because from the forward direction alone it is indistinguishable from
  # there being no signature at all.
- in_scope.sort.each do |name|
- aws_ecr_repository(repository_name: name).orphan_supply_chain_artifacts.each do |o|
+ orphans_by_repo.each do |name, found|
+ found.each do |o|
  it("#{name} — orphaned supply-chain artifact #{o}") { expect(true).to eq true }
  end
  end
