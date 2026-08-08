@@ -31,6 +31,19 @@ control 'ecr-registry-inventory' do
  flag = excluded.include?(name) ? ' [EXCLUDED]' : ''
  it("repository: #{name}#{flag}") { expect(true).to eq true }
  end
+
+ # Reverse resolution (#11): supply-chain artifacts whose subject digest is
+ # not a current image here. Either the image was replaced and its signature
+ # left behind, or the subject is a child manifest of a multi-arch Image
+ # Index. Informational like the rest of this control — an orphan is
+ # provenance metadata, not a compliance failure — but it must be VISIBLE,
+ # because from the forward direction alone it is indistinguishable from
+ # there being no signature at all.
+ in_scope.sort.each do |name|
+ aws_ecr_repository(repository_name: name).orphan_supply_chain_artifacts.each do |o|
+ it("#{name} — orphaned supply-chain artifact #{o}") { expect(true).to eq true }
+ end
+ end
  end
  end
 end

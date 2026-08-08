@@ -14,6 +14,8 @@
 # "absent" rather than failing the whole resource.
 
 require "json"
+require "set"   # Enumerable#to_set — autoloaded in Ruby 3.4, explicit here so the
+                # resource does not depend on the runtime's autoload behaviour.
 
 class AwsEcrRepository < AwsResourceBase
   name "aws_ecr_repository"
@@ -162,18 +164,45 @@ class AwsEcrRepository < AwsResourceBase
     end.map { |im| im[:tags].first || im[:digest] }
   end
 
-  SBOM_MEDIA = /spdx|cyclonedx|in-toto|\bsbom\b|bom/i.freeze
+  # ---------------------------------------------------------------------------
+  # Media-type classification.
+  #
+  # cosign 3.x (OCI 1.1) distinguishes signature from attestation ONLY by the
+  # `.sig` / `.att` infix:
+  #
+  #   application/vnd.dev.cosign.artifact.sig.v1+json   <- signature
+  #   application/vnd.dev.cosign.artifact.att.v1+json   <- attestation (SBOM,
+  #                                                        provenance, …)
+  #
+  # A pattern matching bare `cosign` therefore matches BOTH, and an SBOM
+  # attestation silently satisfies a signature check while the SBOM check —
+  # looking for `cyclonedx` — finds nothing, because the predicate type lives
+  # inside the DSSE payload, not in the artifact media type. That combination
+  # produced "signed + no-SBOM" for images that are in fact both signed AND
+  # SBOM-attested. Match the infix explicitly, never bare `cosign`.
+  # ---------------------------------------------------------------------------
 
-  # Signature media types, matched against OCI referrers. cosign in OCI-1.1 mode
-  # attaches the signature as an UNTAGGED artifact whose `subject` is the image
-  # manifest digest — no sha256-<digest>.sig tag exists at all. Notation and
-  # sigstore bundles use the same subject mechanism with their own media types.
   SIGNATURE_MEDIA = %r{
-    cosign|simplesigning|
-    notary|notation|
-    sigstore|dsse|
-    application/vnd\.dev\.sigstore\.bundle
+    cosign\.artifact\.sig|
+    simplesigning|
+    notary\.signature|notation\.signature|
+    sigstore\.bundle
   }xi.freeze
+
+  # Attestation envelopes. The predicate (CycloneDX / SPDX / SLSA provenance) is
+  # inside the signed payload and is NOT visible in the referrer metadata, so
+  # this cannot by itself prove the attestation is an SBOM — see
+  # attestation_kinds_undetermined below, which reports that honestly rather
+  # than guessing in either direction.
+  ATTESTATION_MEDIA = %r{
+    cosign\.artifact\.att|
+    dsse\.envelope|
+    in-toto
+  }xi.freeze
+
+  # Predicate types that ARE identifiable from referrer metadata, when the
+  # registry surfaces the predicate as the artifactType rather than an envelope.
+  SBOM_MEDIA = /spdx|cyclonedx|\bsbom\b/i.freeze
 
   # Images missing a signature and/or an SBOM referrer (supply-chain gaps). Fail-closed:
   # an unsigned image, or one without an attached SBOM, is a gap. Returns labels.
@@ -182,7 +211,14 @@ class AwsEcrRepository < AwsResourceBase
       miss = []
       miss << "unsigned" unless image_signed?(im[:digest])
       miss << "no-SBOM"  unless image_has_sbom?(im[:digest])
-      miss.empty? ? nil : "#{im[:tags].first || im[:digest][0, 16]}: #{miss.join('+')}"
+      next nil if miss.empty?
+      # Self-diagnosing: list the referrers that WERE present. A gap reporting
+      # what it saw can be acted on; a bare "no-SBOM" is indistinguishable from
+      # a media-type pattern that failed to match, which is exactly how two
+      # earlier versions of this check were wrong.
+      seen = observed_referrer_types(im[:digest])
+      saw = seen.empty? ? "no referrers found" : "referrers seen: #{seen.join(', ')}"
+      "#{im[:tags].first || im[:digest][0, 16]}: #{miss.join('+')} [#{saw}]"
     end.compact
   end
 
@@ -293,8 +329,63 @@ class AwsEcrRepository < AwsResourceBase
 
   def image_has_sbom?(digest)
     return true if cosign_attested?(digest)
-    referrer_sbom?(digest)
+    refs = begin
+             @sbom_error = nil
+             referrers_for(digest)
+           rescue StandardError => e
+             @sbom_error = e.class.name
+             []
+           end
+    # An SBOM predicate named outright, OR a cosign attestation envelope. The
+    # envelope's predicate is not visible here (it is inside the signed
+    # payload), so an attestation counts — and attestation_kinds_undetermined
+    # records that we could not confirm WHICH predicate it carries.
+    referrer_matches?(refs, SBOM_MEDIA) || referrer_matches?(refs, ATTESTATION_MEDIA)
   end
+
+  public
+
+  # ---- reverse direction: artifact -> subject -------------------------------
+  # Forward resolution (image -> its referrers) answers "is this image signed".
+  # It cannot explain an artifact that belongs to something else. Reverse
+  # resolution maps every cosign-style tag back to the digest it describes, so
+  # a signature for a SUPERSEDED image, or for a CHILD manifest inside a
+  # multi-arch Image Index, is reported rather than silently ignored.
+
+  # subject digest => [kinds] for every sha256-<digest>.<kind> tag in the repo.
+  def signature_subjects
+    all_tags.each_with_object({}) do |t, acc|
+      m = /\Asha256-(?<d>[0-9a-f]{64})\.(?<kind>sig|att|sbom)\z/.match(t.to_s)
+      next unless m
+      (acc["sha256:#{m[:d]}"] ||= []) << m[:kind]
+    end
+  end
+
+  # Supply-chain artifacts whose subject is NOT a current image in this
+  # repository. Either the image was replaced and its signature left behind, or
+  # the subject is a child manifest of an Image Index — both are worth seeing,
+  # and neither is visible from the forward direction alone.
+  def orphan_supply_chain_artifacts
+    known = images.map { |im| im[:digest] }.to_set
+    signature_subjects.reject { |subject, _| known.include?(subject) }
+                      .map { |subject, kinds| "#{subject[0, 19]}…: #{kinds.sort.join('+')} (no current image with this digest)" }
+  end
+
+  # Referrer artifact types actually observed, per image. Emitted alongside a
+  # gap so the finding explains itself: a "no-SBOM" that lists the referrers it
+  # DID see is diagnosable, one that lists nothing is a guess. Two rounds of
+  # media-type patterns were wrong before this existed.
+  def observed_referrer_types(digest)
+    referrers_for(digest).flat_map do |r|
+      %i[artifact_media_type artifact_type media_type].filter_map do |m|
+        r.public_send(m).to_s if r.respond_to?(m) && !r.public_send(m).to_s.empty?
+      end
+    end.uniq
+  rescue StandardError
+    []
+  end
+
+  private
 
   def sbom_undetermined?(digest)
     return false if cosign_attested?(digest)
