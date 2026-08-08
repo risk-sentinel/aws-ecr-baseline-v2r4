@@ -44,7 +44,42 @@ class AwsEcrRegistryScanning < AwsResourceBase
     @rules.map { |r| r.respond_to?(:scan_frequency) ? r.scan_frequency : nil }.compact
   end
 
+  # ENHANCED alone does not mean images are rescanned. A rule may declare
+  # SCAN_ON_PUSH or MANUAL, which is point-in-time: an image scanned clean at
+  # push is never re-evaluated against CVEs disclosed afterwards, while the
+  # registry still reports as "enhanced". CONTINUOUS_SCAN is the frequency that
+  # makes the claim true.
+  def continuous?
+    scan_frequencies.map(&:to_s).include?("CONTINUOUS_SCAN")
+  end
+
+  # Repository names NOT matched by any rule's repository filter. A registry can
+  # have enhanced scanning enabled while its rules cover only some repositories;
+  # the uncovered ones are never scanned, and an unscanned repository produces
+  # no findings — which reads as no problems.
+  #
+  # ECR repository filters are wildcard patterns. Note `sparc-prod-*` does NOT
+  # match `sparc-prod` — the same wildcard-boundary trap that left the scanner
+  # role able to inspect one repository of six (sparc-iac#633).
+  def repositories_not_covered(names)
+    patterns = @rules.flat_map do |r|
+      next [] unless r.respond_to?(:repository_filters)
+      Array(r.repository_filters).map { |f| f.respond_to?(:filter) ? f.filter.to_s : nil }
+    end.compact
+    return Array(names) if patterns.empty?
+    Array(names).reject { |n| patterns.any? { |p| wildcard_match?(p, n) } }
+  end
+
   def to_s
     "ECR Registry Scanning (#{@scan_type || 'unknown'})"
+  end
+
+  private
+
+  # ECR filter wildcards: `*` matches zero or more characters, and the pattern
+  # must match the WHOLE repository name.
+  def wildcard_match?(pattern, name)
+    re = Regexp.escape(pattern.to_s).gsub('\*', '.*')
+    Regexp.new("\\A#{re}\\z").match?(name.to_s)
   end
 end
