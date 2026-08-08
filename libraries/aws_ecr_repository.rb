@@ -164,6 +164,17 @@ class AwsEcrRepository < AwsResourceBase
 
   SBOM_MEDIA = /spdx|cyclonedx|in-toto|\bsbom\b|bom/i.freeze
 
+  # Signature media types, matched against OCI referrers. cosign in OCI-1.1 mode
+  # attaches the signature as an UNTAGGED artifact whose `subject` is the image
+  # manifest digest — no sha256-<digest>.sig tag exists at all. Notation and
+  # sigstore bundles use the same subject mechanism with their own media types.
+  SIGNATURE_MEDIA = %r{
+    cosign|simplesigning|
+    notary|notation|
+    sigstore|dsse|
+    application/vnd\.dev\.sigstore\.bundle
+  }xi.freeze
+
   # Images missing a signature and/or an SBOM referrer (supply-chain gaps). Fail-closed:
   # an unsigned image, or one without an attached SBOM, is a gap. Returns labels.
   def supply_chain_gaps
@@ -183,8 +194,8 @@ class AwsEcrRepository < AwsResourceBase
   def supply_chain_undetermined
     images.map do |im|
       reasons = []
-      reasons << "signing: #{@signing_error}" if signing_undetermined?(im[:digest])
-      reasons << "sbom: #{@sbom_error}"       if sbom_undetermined?(im[:digest])
+      reasons << "signing: #{[@referrer_error, @signing_error].compact.join('/')}" if signing_undetermined?(im[:digest])
+      reasons << "sbom: #{@sbom_error}"                                            if sbom_undetermined?(im[:digest])
       reasons.empty? ? nil : "#{im[:tags].first || im[:digest][0, 16]}: #{reasons.join('; ')}"
     end.compact
   end
@@ -218,31 +229,63 @@ class AwsEcrRepository < AwsResourceBase
   end
 
   def image_signed?(digest)
-    # Cheapest and most likely first: cosign tags come from the DescribeImages
-    # pass already made, so this costs no API call and needs no extra grant.
+    # Cheapest first: cosign tags come from the DescribeImages pass already
+    # made, so this costs no API call and needs no extra grant.
     return true if cosign_signed?(digest)
+    # Then referrers. cosign in OCI-1.1 mode attaches the signature as an
+    # UNTAGGED artifact whose subject is the image manifest digest, so no tag
+    # exists to find. This path was previously absent entirely: image_signed?
+    # consulted only AWS-native signing, while referrers were checked for SBOMs
+    # alone — leaving referrer-attached signatures unreachable by any code path.
+    return true if referrer_signed?(digest)
     native_signed?(digest)
   end
 
-  # True only when NO signature was found by any mechanism AND the one that
-  # makes an API call errored — i.e. the answer is unknown rather than "no".
+  # True only when NO signature was found by any mechanism AND at least one
+  # mechanism that makes an API call errored — the answer is unknown, not "no".
   def signing_undetermined?(digest)
     return false if cosign_signed?(digest)
+    referrer_signed?(digest)
+    referrer_err = @referrer_error
     native_signed?(digest)
-    !@signing_error.nil?
+    !(referrer_err.nil? && @signing_error.nil?)
   end
 
-  def referrer_sbom?(digest)
-    @sbom_error = nil
+  # All OCI referrers for a subject manifest digest. Shared by the signature and
+  # SBOM checks so the listing is paginated and error-handled in one place.
+  def referrers_for(digest)
     refs = []
     token = nil
     loop do
-      resp = @aws.ecr_client.list_image_referrers(repository_name: @repository_name, subject_id: { image_digest: digest }, next_token: token)
+      resp = @aws.ecr_client.list_image_referrers(
+        repository_name: @repository_name, subject_id: { image_digest: digest }, next_token: token
+      )
       refs.concat(Array(resp.referrers))
       token = resp.next_token
       break if token.nil? || token.to_s.empty?
     end
-    refs.any? { |r| %i[artifact_media_type artifact_type media_type].any? { |m| r.respond_to?(m) && r.public_send(m).to_s =~ SBOM_MEDIA } }
+    refs
+  end
+
+  def referrer_matches?(refs, pattern)
+    refs.any? do |r|
+      %i[artifact_media_type artifact_type media_type].any? do |m|
+        r.respond_to?(m) && r.public_send(m).to_s =~ pattern
+      end
+    end
+  end
+
+  def referrer_signed?(digest)
+    @referrer_error = nil
+    referrer_matches?(referrers_for(digest), SIGNATURE_MEDIA)
+  rescue StandardError => e
+    @referrer_error = e.class.name
+    false
+  end
+
+  def referrer_sbom?(digest)
+    @sbom_error = nil
+    referrer_matches?(referrers_for(digest), SBOM_MEDIA)
   rescue StandardError => e
     @sbom_error = e.class.name
     false
