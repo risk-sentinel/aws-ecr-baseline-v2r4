@@ -236,115 +236,6 @@ class AwsEcrRepository < AwsResourceBase
     end.compact
   end
 
-  private
-
-  # cosign's DEFAULT scheme: the signature for sha256:X is pushed as a separate
-  # artifact tagged `sha256-X.sig` in the SAME repository. The referrers API is
-  # opt-in, and AWS-native signing (Signer/Notation) is a different mechanism
-  # again — so all three are checked and any one of them counts as signed.
-  def cosign_tag_for(digest, suffix)
-    "sha256-#{digest.to_s.delete_prefix('sha256:')}.#{suffix}"
-  end
-
-  def cosign_signed?(digest)
-    all_tags.include?(cosign_tag_for(digest, "sig"))
-  end
-
-  def cosign_attested?(digest)
-    %w[att sbom].any? { |s| all_tags.include?(cosign_tag_for(digest, s)) }
-  end
-
-  def native_signed?(digest)
-    @signing_error = nil
-    !Array(@aws.ecr_client.describe_image_signing_status(
-      repository_name: @repository_name, image_id: { image_digest: digest }
-    ).signing_statuses).empty?
-  rescue StandardError => e
-    @signing_error = e.class.name
-    false
-  end
-
-  def image_signed?(digest)
-    # Cheapest first: cosign tags come from the DescribeImages pass already
-    # made, so this costs no API call and needs no extra grant.
-    return true if cosign_signed?(digest)
-    # Then referrers. cosign in OCI-1.1 mode attaches the signature as an
-    # UNTAGGED artifact whose subject is the image manifest digest, so no tag
-    # exists to find. This path was previously absent entirely: image_signed?
-    # consulted only AWS-native signing, while referrers were checked for SBOMs
-    # alone — leaving referrer-attached signatures unreachable by any code path.
-    return true if referrer_signed?(digest)
-    native_signed?(digest)
-  end
-
-  # True only when NO signature was found by any mechanism AND at least one
-  # mechanism that makes an API call errored — the answer is unknown, not "no".
-  def signing_undetermined?(digest)
-    return false if cosign_signed?(digest)
-    referrer_signed?(digest)
-    referrer_err = @referrer_error
-    native_signed?(digest)
-    !(referrer_err.nil? && @signing_error.nil?)
-  end
-
-  # All OCI referrers for a subject manifest digest. Shared by the signature and
-  # SBOM checks so the listing is paginated and error-handled in one place.
-  def referrers_for(digest)
-    refs = []
-    token = nil
-    loop do
-      resp = @aws.ecr_client.list_image_referrers(
-        repository_name: @repository_name, subject_id: { image_digest: digest }, next_token: token
-      )
-      refs.concat(Array(resp.referrers))
-      token = resp.next_token
-      break if token.nil? || token.to_s.empty?
-    end
-    refs
-  end
-
-  def referrer_matches?(refs, pattern)
-    refs.any? do |r|
-      %i[artifact_media_type artifact_type media_type].any? do |m|
-        r.respond_to?(m) && r.public_send(m).to_s =~ pattern
-      end
-    end
-  end
-
-  def referrer_signed?(digest)
-    @referrer_error = nil
-    referrer_matches?(referrers_for(digest), SIGNATURE_MEDIA)
-  rescue StandardError => e
-    @referrer_error = e.class.name
-    false
-  end
-
-  def referrer_sbom?(digest)
-    @sbom_error = nil
-    referrer_matches?(referrers_for(digest), SBOM_MEDIA)
-  rescue StandardError => e
-    @sbom_error = e.class.name
-    false
-  end
-
-  def image_has_sbom?(digest)
-    return true if cosign_attested?(digest)
-    refs = begin
-             @sbom_error = nil
-             referrers_for(digest)
-           rescue StandardError => e
-             @sbom_error = e.class.name
-             []
-           end
-    # An SBOM predicate named outright, OR a cosign attestation envelope. The
-    # envelope's predicate is not visible here (it is inside the signed
-    # payload), so an attestation counts — and attestation_kinds_undetermined
-    # records that we could not confirm WHICH predicate it carries.
-    referrer_matches?(refs, SBOM_MEDIA) || referrer_matches?(refs, ATTESTATION_MEDIA)
-  end
-
-  public
-
   # ---- reverse direction: artifact -> subject -------------------------------
   # Forward resolution (image -> its referrers) answers "is this image signed".
   # It cannot explain an artifact that belongs to something else. Reverse
@@ -385,7 +276,86 @@ class AwsEcrRepository < AwsResourceBase
     []
   end
 
+  def to_s
+    "ECR Repository #{@repository_name}"
+  end
+
   private
+
+  # ---- cosign tag scheme ----------------------------------------------------
+  # cosign's pre-OCI-1.1 default: the signature for sha256:X is a separate
+  # artifact tagged `sha256-X.sig` in the SAME repository. Resolved from the
+  # DescribeImages pass already made, so it costs no API call and needs no
+  # additional IAM grant.
+
+  def cosign_tag_for(digest, suffix)
+    "sha256-#{digest.to_s.delete_prefix('sha256:')}.#{suffix}"
+  end
+
+  def cosign_signed?(digest)
+    all_tags.include?(cosign_tag_for(digest, "sig"))
+  end
+
+  def cosign_attested?(digest)
+    %w[att sbom].any? { |s| all_tags.include?(cosign_tag_for(digest, s)) }
+  end
+
+  # ---- signature detection --------------------------------------------------
+  # Three unrelated mechanisms; any one counts as signed. Ordered cheapest-first.
+
+  def image_signed?(digest)
+    return true if cosign_signed?(digest)     # tags — no API call
+    return true if referrer_signed?(digest)   # OCI 1.1 referrers
+    native_signed?(digest)                    # AWS Signer / Notation
+  end
+
+  def referrer_signed?(digest)
+    @referrer_error = nil
+    referrer_matches?(referrers_for(digest), SIGNATURE_MEDIA)
+  rescue StandardError => e
+    @referrer_error = e.class.name
+    false
+  end
+
+  def native_signed?(digest)
+    @signing_error = nil
+    !Array(@aws.ecr_client.describe_image_signing_status(
+      repository_name: @repository_name, image_id: { image_digest: digest }
+    ).signing_statuses).empty?
+  rescue StandardError => e
+    @signing_error = e.class.name
+    false
+  end
+
+  # True only when NO signature was found by any mechanism AND at least one
+  # mechanism that makes an API call errored — the answer is unknown, not "no".
+  def signing_undetermined?(digest)
+    return false if cosign_signed?(digest)
+    referrer_signed?(digest)
+    referrer_err = @referrer_error
+    native_signed?(digest)
+    !(referrer_err.nil? && @signing_error.nil?)
+  end
+
+  # ---- SBOM detection -------------------------------------------------------
+
+  def image_has_sbom?(digest)
+    return true if cosign_attested?(digest)   # tags — no API call
+    referrer_sbom?(digest)
+  end
+
+  def referrer_sbom?(digest)
+    @sbom_error = nil
+    refs = referrers_for(digest)
+    # An SBOM predicate named outright, OR a cosign attestation envelope. The
+    # envelope's predicate type lives inside the signed payload and is NOT
+    # visible in referrer metadata, so an attestation counts as evidence here.
+    # Proving it is specifically an SBOM would mean fetching the payload.
+    referrer_matches?(refs, SBOM_MEDIA) || referrer_matches?(refs, ATTESTATION_MEDIA)
+  rescue StandardError => e
+    @sbom_error = e.class.name
+    false
+  end
 
   def sbom_undetermined?(digest)
     return false if cosign_attested?(digest)
@@ -393,9 +363,29 @@ class AwsEcrRepository < AwsResourceBase
     !@sbom_error.nil?
   end
 
-  public
+  # ---- referrer plumbing ----------------------------------------------------
+  # Pagination and matching in one place so the signature and SBOM paths cannot
+  # drift apart.
 
-  def to_s
-    "ECR Repository #{@repository_name}"
+  def referrers_for(digest)
+    refs = []
+    token = nil
+    loop do
+      resp = @aws.ecr_client.list_image_referrers(
+        repository_name: @repository_name, subject_id: { image_digest: digest }, next_token: token
+      )
+      refs.concat(Array(resp.referrers))
+      token = resp.next_token
+      break if token.nil? || token.to_s.empty?
+    end
+    refs
+  end
+
+  def referrer_matches?(refs, pattern)
+    refs.any? do |r|
+      %i[artifact_media_type artifact_type media_type].any? do |m|
+        r.respond_to?(m) && r.public_send(m).to_s =~ pattern
+      end
+    end
   end
 end
