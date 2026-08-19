@@ -1,0 +1,75 @@
+# =============================================================================
+# stig-aws-ecr-baseline — reference inputs
+#
+#   cp inputs/example.yml inputs/mine.yml   # edit, then:
+#   cinc-auditor exec . -t aws:// --input-file inputs/mine.yml
+#
+# --input-file is NOT optional. cinc-auditor does not auto-load a profile-root
+# inputs file, and several controls change behaviour on an empty input — so
+# omitting it gives a different run rather than a failing one.
+# =============================================================================
+
+# ---- REQUIRED TO RUN --------------------------------------------------------
+
+# Which AWS partition is being scanned.
+#   aws         AWS Commercial
+#   aws-us-gov  AWS GovCloud (non-DoD)
+aws_partition: aws
+
+# ---- SCOPING — read both of these before your first run ---------------------
+
+# Repositories to assess.
+# EMPTY = EVERY ECR repository in the account. That is the intended default and
+# it is not a no-op — with 189 controls, an unexpectedly large repository list
+# is the difference between a fast scan and a very long one.
+#   assessed_repositories: [my-app, my-sidecar]
+assessed_repositories: []
+
+# Repositories to drop from scoring, applied on top of whatever the line above
+# selected. For third-party mirrors, archived repos, or anything you do not own.
+# Every entry is a documented exclusion, not a convenience.
+excluded_repositories: []
+
+# ---- POLICY — these decide pass/fail, not scope -----------------------------
+
+# Highest image-scan finding severity tolerated before a control fails.
+# One of: CRITICAL, HIGH, MEDIUM, LOW, INFORMATIONAL.
+# FAIL-CLOSED: an image that has never been scanned also fails. "We do not know"
+# is not treated as "clean".
+max_image_finding_severity: HIGH
+
+# Require ENHANCED (Amazon Inspector) scanning rather than BASIC.
+# Set false to accept BASIC — a smaller finding surface and no OS-package CVE
+# coverage, which is a risk-acceptance decision rather than a preference.
+require_enhanced_scanning: true
+
+# Require repositories to use a customer-managed KMS key.
+# Set false to accept AWS-managed AES256. With the AWS-managed key you cannot
+# apply a key policy, audit key usage separately, or revoke access by disabling
+# the key.
+require_kms_cmk_encryption: true
+
+# Organization minimum password length, for the controls that assert it.
+pw_min_length: 15
+
+# ---- ALLOW-LIST -------------------------------------------------------------
+
+# Account IDs whose ECR registries are approved as image sources.
+# EMPTY = the cross-account provenance control has no allow-list to check
+# against and reports that, rather than silently passing.
+#   trusted_registry_account_ids: ['111111111111']
+trusted_registry_account_ids: []
+
+# ---- ATTESTATION — evidence for what no API can answer ----------------------
+
+# Base URI for the leveraged cloud-provider authorization manifest — the
+# inherited-evidence class (FedRAMP / SOC 2 / ISO).
+leveraged_evidence_base: ''
+
+# Explicit override URI for that manifest.
+# EMPTY = resolved from leveraged_evidence_base; if that is empty too, the
+# inherited controls skip with a rationale rather than passing.
+inherited_evidence_uri: ''
+
+# How old the leveraged evidence may be before it stops counting as current.
+leveraged_evidence_max_age_days: 365
