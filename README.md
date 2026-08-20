@@ -1,5 +1,7 @@
 # stig-aws-ecr-baseline
 
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=risk-sentinel_aws-ecr-baseline-v2r4)](https://sonarcloud.io/summary/new_code?id=risk-sentinel_aws-ecr-baseline-v2r4)
+
 InSpec / CINC Auditor profile validating **Amazon ECR** against the DISA
 **Container Platform SRG**, adapted to ECR as the platform — 189 controls across
 image scanning, encryption, registry policy, immutability, provenance and the
