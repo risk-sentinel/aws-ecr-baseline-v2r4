@@ -224,7 +224,7 @@ class AwsEcrRepository < AwsResourceBase
 
   # Images whose supply-chain state could NOT be determined — an API error, a
   # denied permission, a throttle. Deliberately separate from supply_chain_gaps:
-  # "cannot determine" is not "non-compliant" (#11). Folding the two together
+  # "cannot determine" is not "non-compliant". Folding the two together
   # made an IAM denial indistinguishable from an unsigned image, so the control
   # was untrustworthy in both directions.
   def supply_chain_undetermined
