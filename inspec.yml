@@ -29,7 +29,7 @@ summary: |
   the repos backing its own workloads (each profile stands alone).
 
   Targets AWS Commercial (aws) and AWS GovCloud non-organization (aws-us-gov);
-  behaviour tuned via inputs. Built for any consumer, not just SPARC.
+  behaviour tuned via inputs. Built for any consumer.
 version: 0.1.0
 inspec_version: '>= 5.0'
 

@@ -58,9 +58,9 @@ class AwsEcrRegistryScanning < AwsResourceBase
   # the uncovered ones are never scanned, and an unscanned repository produces
   # no findings — which reads as no problems.
   #
-  # ECR repository filters are wildcard patterns. Note `sparc-prod-*` does NOT
-  # match `sparc-prod` — the same wildcard-boundary trap that left the scanner
-  # role able to inspect one repository of six (sparc-iac#633).
+  # ECR repository filters are wildcard patterns. Note `myapp-prod-*` does NOT
+  # match `myapp-prod` — a wildcard-boundary trap seen in testing, where a
+  # scanner role could inspect only one repository out of six.
   def repositories_not_covered(names)
     patterns = @rules.flat_map do |r|
       next [] unless r.respond_to?(:repository_filters)

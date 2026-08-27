@@ -68,7 +68,7 @@ These resolve via the AWS SDK (`aws-sdk-ecr`) — confirm the gem is in the scan
 ### Scanner-role IAM (read-only)
 `ecr:DescribeRepositories`, `ecr:GetRepositoryPolicy`, `ecr:GetLifecyclePolicy`,
 `ecr:DescribeImages`, `ecr:DescribeImageScanFindings`, `ecr:GetRegistryScanningConfiguration`,
-`ecr:GetRegistryPolicy` — to be added to the scanner role (sparc-iac), analogous to #368.
+`ecr:GetRegistryPolicy` — to be added to the scanner role in your IaC repo.
 
 ---
 
