@@ -25,7 +25,7 @@ control 'ecr-registry-inventory' do
  # describe body is an example GROUP, not an example. Resources are only
  # available at control scope (as above) or inside an `it`/`before`/`let`.
  # `check` and `json` do not evaluate control bodies, so this only surfaces on
- # a real exec (#11).
+ # a real exec.
  orphans_by_repo = in_scope.sort.each_with_object({}) do |name, acc|
  found = aws_ecr_repository(repository_name: name).orphan_supply_chain_artifacts
  acc[name] = found unless found.empty?
@@ -43,7 +43,7 @@ control 'ecr-registry-inventory' do
  it("repository: #{name}#{flag}") { expect(true).to eq true }
  end
 
- # Reverse resolution (#11): supply-chain artifacts whose subject digest is
+ # Reverse resolution: supply-chain artifacts whose subject digest is
  # not a current image here. Either the image was replaced and its signature
  # left behind, or the subject is a child manifest of a multi-arch Image
  # Index. Informational like the rest of this control — an orphan is

@@ -41,7 +41,7 @@ control 'SV-233065' do
  it { should be_empty }
  end
 
- # Surfaced separately on purpose (#11). An API error — a denied
+ # Surfaced separately on purpose. An API error — a denied
  # ecr:ListImageReferrers, a throttle — must never present as "unsigned".
  # Without this the two are indistinguishable, and the check above cannot be
  # believed in either direction: not when it fails, and not when it passes.
