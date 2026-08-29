@@ -29,6 +29,7 @@ control 'SV-263599' do
  tag 'documentable'
  tag cci: ['CCI-004909']
  tag nist: ['SC-17 b']
+ tag nist_r4: ['SC-17']
  tag ksi:  ['KSI-SVC-ASM']
  tag implementation_status: 'implemented'
  tag fsbp: 'n/a'
