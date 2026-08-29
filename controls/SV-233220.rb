@@ -18,6 +18,7 @@ control 'SV-233220' do
  impact 0.7
  tag check_id: 'C-36156r601147_chk'
  tag severity: 'high'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233220'
  tag rid: 'SV-233220r1050650_rule'
  tag stig_id: 'SRG-APP-000429-CTR-001060'

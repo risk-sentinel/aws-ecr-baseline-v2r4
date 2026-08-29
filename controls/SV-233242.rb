@@ -22,6 +22,7 @@ control 'SV-233242' do
  impact 0.5
  tag check_id: 'C-36178r601831_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233242'
  tag rid: 'SV-233242r961731_rule'
  tag stig_id: 'SRG-APP-000472-CTR-001170'

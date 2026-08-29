@@ -16,6 +16,7 @@ control 'SV-270875' do
  impact 0.5
  tag check_id: 'C-74910r1050644_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-270875'
  tag rid: 'SV-270875r1050646_rule'
  tag stig_id: 'SRG-APP-000247-CTR-000330'
