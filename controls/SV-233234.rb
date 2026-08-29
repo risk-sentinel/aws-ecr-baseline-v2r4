@@ -34,6 +34,7 @@ control 'SV-233234' do
  tag 'documentable'
  tag cci: ['CCI-002605']
  tag nist: ['SI-2 c']
+ tag ksi:  ['KSI-CMT-VTD']
  tag nist_r4: ['SI-2 c']
  tag implementation_status: 'implemented'
 

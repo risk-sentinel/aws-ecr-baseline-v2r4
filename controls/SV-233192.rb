@@ -35,6 +35,7 @@ control 'SV-233192' do
  tag 'documentable'
  tag cci: ['CCI-001774']
  tag nist: ['CM-7 (5) (b)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-PIY-GIV']
  tag nist_r4: ['CM-7 (5) (b)']
  tag implementation_status: 'implemented'
 

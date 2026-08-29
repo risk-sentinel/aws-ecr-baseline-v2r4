@@ -28,6 +28,7 @@ control 'SV-233275' do
  tag 'documentable'
  tag cci: ['CCI-000366']
  tag nist: ['CM-6 b']
+ tag ksi:  ['KSI-CMT-LMC', 'KSI-CMT-RMV', 'KSI-MLA-EVC', 'KSI-SVC-ACM']
  tag nist_r4: ['CM-6 b']
  tag implementation_status: 'implemented'
  tag fsbp: 'ECR.1'

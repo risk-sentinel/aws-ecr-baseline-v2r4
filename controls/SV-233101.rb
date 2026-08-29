@@ -25,6 +25,7 @@ control 'SV-233101' do
  tag 'documentable'
  tag cci: ['CCI-000187']
  tag nist: ['IA-5 (2) (a) (2)']
+ tag ksi:  ['KSI-IAM-APM', 'KSI-IAM-ELP', 'KSI-IAM-SNU', 'KSI-SVC-ASM']
  tag nist_r4: ['IA-5 (2) (c)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

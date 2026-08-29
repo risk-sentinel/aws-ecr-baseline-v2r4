@@ -33,6 +33,7 @@ control 'SV-233191' do
  tag 'documentable'
  tag cci: ['CCI-001764']
  tag nist: ['CM-7 (2)']
+ tag ksi:  ['KSI-IAM-JIT']
  tag nist_r4: ['CM-7 (2)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

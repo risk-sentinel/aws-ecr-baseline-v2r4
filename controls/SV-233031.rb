@@ -25,6 +25,7 @@ control 'SV-233031' do
  tag 'documentable'
  tag cci: ['CCI-000044']
  tag nist: ['AC-7 a']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-IAM-SUS']
  tag nist_r4: ['AC-7 a']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

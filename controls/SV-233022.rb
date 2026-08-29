@@ -31,6 +31,7 @@ control 'SV-233022' do
  tag 'documentable'
  tag cci: ['CCI-000018']
  tag nist: ['AC-2 (4)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-MLA-LET', 'KSI-MLA-RVL', 'KSI-SVC-ACM']
  tag nist_r4: ['AC-2 (4)']
  tag implementation_status: 'implemented'
 

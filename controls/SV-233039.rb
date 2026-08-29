@@ -32,6 +32,7 @@ control 'SV-233039' do
  tag 'documentable'
  tag cci: ['CCI-000171']
  tag nist: ['AU-12 b']
+ tag ksi:  ['KSI-MLA-LET']
  tag nist_r4: ['AU-12 b']
  tag implementation_status: 'alternative'
  tag attestation_category: 'governance'

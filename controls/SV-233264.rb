@@ -26,6 +26,7 @@ control 'SV-233264' do
  tag 'documentable'
  tag cci: ['CCI-000172']
  tag nist: ['AU-12 c']
+ tag ksi:  ['KSI-MLA-LET']
  tag nist_r4: ['AU-12 c']
  tag implementation_status: 'implemented'
 

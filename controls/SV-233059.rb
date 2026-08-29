@@ -27,6 +27,7 @@ control 'SV-233059' do
  tag 'documentable'
  tag cci: ['CCI-001493']
  tag nist: ['AU-9 a']
+ tag ksi:  ['KSI-MLA-OSM']
  tag nist_r4: ['AU-9']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

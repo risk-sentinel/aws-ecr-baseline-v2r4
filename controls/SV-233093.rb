@@ -28,6 +28,7 @@ control 'SV-233093' do
  tag 'documentable'
  tag cci: ['CCI-004066']
  tag nist: ['IA-5 (1) (h)']
+ tag ksi:  ['KSI-IAM-APM']
  tag implementation_status: 'implemented'
 
  impact 0.5

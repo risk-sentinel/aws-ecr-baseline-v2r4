@@ -37,6 +37,7 @@ control 'SV-263594' do
  tag 'documentable'
  tag cci: ['CCI-004061']
  tag nist: ['IA-5 (1) (b)']
+ tag ksi:  ['KSI-IAM-APM']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
 

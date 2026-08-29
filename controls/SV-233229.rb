@@ -29,6 +29,7 @@ control 'SV-233229' do
  tag 'documentable'
  tag cci: ['CCI-002824']
  tag nist: ['SI-16']
+ tag ksi:  ['KSI-CNA-MAT', 'KSI-PIY-RSD']
  tag nist_r4: ['SI-16']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'

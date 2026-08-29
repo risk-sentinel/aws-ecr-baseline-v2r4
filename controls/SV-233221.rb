@@ -33,6 +33,7 @@ control 'SV-233221' do
  tag 'documentable'
  tag cci: ['CCI-002530']
  tag nist: ['SC-39']
+ tag ksi:  ['KSI-IAM-ELP', 'KSI-IAM-JIT', 'KSI-SVC-EIS']
  tag nist_r4: ['SC-39']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

@@ -30,6 +30,7 @@ control 'SV-233079' do
  tag 'documentable'
  tag cci: ['CCI-000765']
  tag nist: ['IA-2 (1)']
+ tag ksi:  ['KSI-IAM-APM']
  tag nist_r4: ['IA-2 (1)']
  tag implementation_status: 'implemented'
 

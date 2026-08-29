@@ -31,6 +31,7 @@ control 'SV-263588' do
  tag 'documentable'
  tag cci: ['CCI-003831']
  tag nist: ['AU-9 b']
+ tag ksi:  ['KSI-MLA-OSM']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
 

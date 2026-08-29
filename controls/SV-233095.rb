@@ -56,6 +56,7 @@ control 'SV-233095' do
  tag 'documentable'
  tag cci: ['CCI-004062']
  tag nist: ['IA-5 (1) (d)']
+ tag ksi:  ['KSI-IAM-APM']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

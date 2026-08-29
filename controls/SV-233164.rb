@@ -23,6 +23,7 @@ control 'SV-233164' do
  tag 'documentable'
  tag cci: ['CCI-002234']
  tag nist: ['AC-6 (9)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-MLA-LET', 'KSI-MLA-RVL']
  tag nist_r4: ['AC-6 (9)']
  tag implementation_status: 'implemented'
 

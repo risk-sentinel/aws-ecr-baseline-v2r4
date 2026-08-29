@@ -29,6 +29,7 @@ control 'SV-233102' do
  tag 'documentable'
  tag cci: ['CCI-000206']
  tag nist: ['IA-6']
+ tag ksi:  ['KSI-IAM-APM']
  tag nist_r4: ['IA-6']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

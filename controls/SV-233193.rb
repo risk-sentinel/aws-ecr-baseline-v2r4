@@ -32,6 +32,7 @@ control 'SV-233193' do
  tag 'documentable'
  tag cci: ['CCI-002038']
  tag nist: ['IA-11']
+ tag ksi:  ['KSI-IAM-ELP']
  tag nist_r4: ['IA-11']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

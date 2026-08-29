@@ -24,6 +24,7 @@ control 'SV-233047' do
  tag 'documentable'
  tag cci: ['CCI-001487']
  tag nist: ['AU-3 f']
+ tag ksi:  ['KSI-MLA-OSM']
  tag nist_r4: ['AU-3']
  tag implementation_status: 'implemented'
 

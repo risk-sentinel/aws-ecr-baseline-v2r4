@@ -32,6 +32,7 @@ control 'SV-233285' do
  tag 'documentable'
  tag cci: ['CCI-000803']
  tag nist: ['IA-7']
+ tag ksi:  ['KSI-IAM-JIT']
  tag nist_r4: ['IA-7']
  tag implementation_status: 'implemented'
  tag fsbp: 'n/a'

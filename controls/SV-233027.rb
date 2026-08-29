@@ -28,6 +28,7 @@ control 'SV-233027' do
  tag 'documentable'
  tag cci: ['CCI-000213']
  tag nist: ['AC-3']
+ tag ksi:  ['KSI-IAM-APM', 'KSI-IAM-ELP', 'KSI-IAM-JIT']
  tag nist_r4: ['AC-3']
  tag implementation_status: 'implemented'
 

@@ -29,6 +29,7 @@ control 'SV-233190' do
  tag 'documentable'
  tag cci: ['CCI-001762']
  tag nist: ['CM-7 (1) (b)']
+ tag ksi:  ['KSI-CMT-RVP', 'KSI-CNA-RNT', 'KSI-SVC-ACM', 'KSI-SVC-EIS']
  tag nist_r4: ['CM-7 (1) (b)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'

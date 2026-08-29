@@ -28,6 +28,7 @@ control 'SV-233145' do
  tag 'documentable'
  tag cci: ['CCI-000015']
  tag nist: ['AC-2 (1)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-IAM-SUS']
  tag nist_r4: ['AC-2 (1)']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
