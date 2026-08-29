@@ -36,6 +36,7 @@ control 'SV-233224' do
  tag 'documentable'
  tag cci: ['CCI-002418']
  tag nist: ['SC-8']
+ tag nist_r4: ['SC-8']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

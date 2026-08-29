@@ -31,6 +31,7 @@ control 'SV-233244' do
  tag 'documentable'
  tag cci: ['CCI-002702']
  tag nist: ['SI-6 d']
+ tag nist_r4: ['SI-6 d']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
 

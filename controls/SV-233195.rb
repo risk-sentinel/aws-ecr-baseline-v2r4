@@ -28,6 +28,7 @@ control 'SV-233195' do
  tag 'documentable'
  tag cci: ['CCI-001953']
  tag nist: ['IA-2 (12)']
+ tag nist_r4: ['IA-2 (12)']
  tag implementation_status: 'implemented'
 
  # MFA: AWS IAM root account MFA (the readily-assertable signal; per-user MFA needs the

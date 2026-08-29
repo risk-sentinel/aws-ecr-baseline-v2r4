@@ -32,6 +32,7 @@ control 'SV-233142' do
  tag 'documentable'
  tag cci: ['CCI-001496']
  tag nist: ['AU-9 (3)']
+ tag nist_r4: ['AU-9 (3)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

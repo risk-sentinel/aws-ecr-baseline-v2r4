@@ -33,6 +33,7 @@ control 'SV-233163' do
  tag 'documentable'
  tag cci: ['CCI-002233']
  tag nist: ['AC-6 (8)']
+ tag nist_r4: ['AC-6 (8)']
  tag implementation_status: 'not-applicable'
 
  impact 0.0

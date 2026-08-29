@@ -34,6 +34,7 @@ control 'SV-233289' do
  tag 'documentable'
  tag cci: ['CCI-002450']
  tag nist: ['SC-13 b']
+ tag nist_r4: ['SC-13']
  tag implementation_status: 'implemented'
 
  # Encryption at rest: ECR repos encrypted with a KMS CMK (FIPS-validated, HSM-backed

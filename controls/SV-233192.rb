@@ -35,6 +35,7 @@ control 'SV-233192' do
  tag 'documentable'
  tag cci: ['CCI-001774']
  tag nist: ['CM-7 (5) (b)']
+ tag nist_r4: ['CM-7 (5) (b)']
  tag implementation_status: 'implemented'
 
  # Registry-layer ECR assertion (deny-all / permit-by-exception); account-wide, scoped via excluded_repositories.

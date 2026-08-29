@@ -31,6 +31,7 @@ control 'SV-233129' do
  tag 'documentable'
  tag cci: ['CCI-001094']
  tag nist: ['SC-5 (1)']
+ tag nist_r4: ['SC-5 (1)']
  tag implementation_status: 'alternative'
  tag attestation_category: 'governance'
 

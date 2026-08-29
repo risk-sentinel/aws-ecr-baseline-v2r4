@@ -24,6 +24,7 @@ control 'SV-233052' do
  tag 'documentable'
  tag cci: ['CCI-000154']
  tag nist: ['AU-6 (4)']
+ tag nist_r4: ['AU-6 (4)']
  tag implementation_status: 'implemented'
 
  ok = audit_trail_compliant?

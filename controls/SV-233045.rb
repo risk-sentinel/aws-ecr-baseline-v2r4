@@ -29,6 +29,7 @@ control 'SV-233045' do
  tag 'documentable'
  tag cci: ['CCI-000133']
  tag nist: ['AU-3 d']
+ tag nist_r4: ['AU-3']
  tag implementation_status: 'implemented'
 
  # Durable, tamper-evident audit-record generation via account CloudTrail (cross-validates

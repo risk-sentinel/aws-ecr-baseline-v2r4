@@ -25,6 +25,7 @@ control 'SV-278968' do
  tag 'documentable'
  tag cci: ['CCI-003376']
  tag nist: ['SA-22 a']
+ tag nist_r4: ['SA-22 a']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

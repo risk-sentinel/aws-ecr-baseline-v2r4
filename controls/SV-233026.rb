@@ -30,6 +30,7 @@ control 'SV-233026' do
  tag 'documentable'
  tag cci: ['CCI-000213']
  tag nist: ['AC-3']
+ tag nist_r4: ['AC-3']
  tag implementation_status: 'implemented'
 
  # Registry-layer ECR assertion (least-privilege registry access); account-wide, scoped via excluded_repositories.

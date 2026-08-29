@@ -29,6 +29,7 @@ control 'SV-233210' do
  tag 'documentable'
  tag cci: ['CCI-001067']
  tag nist: ['RA-5 (5)']
+ tag nist_r4: ['RA-5 (5)']
  tag implementation_status: 'implemented'
  tag fsbp: 'ECR.1'
 

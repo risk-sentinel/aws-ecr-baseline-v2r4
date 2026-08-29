@@ -29,6 +29,7 @@ control 'SV-233028' do
  tag 'documentable'
  tag cci: ['CCI-000213']
  tag nist: ['AC-3']
+ tag nist_r4: ['AC-3']
  tag implementation_status: 'implemented'
 
  # Least-privilege access to the registry: no public/cross-account principal.

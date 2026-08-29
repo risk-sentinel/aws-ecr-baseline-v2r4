@@ -25,6 +25,7 @@ control 'SV-270875' do
  tag 'documentable'
  tag cci: ['CCI-001095']
  tag nist: ['SC-5 (2)']
+ tag nist_r4: ['SC-5 (2)']
  tag implementation_status: 'not-applicable'
 
  impact 0.0

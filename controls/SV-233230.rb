@@ -36,6 +36,7 @@ control 'SV-233230' do
  tag 'documentable'
  tag cci: ['CCI-002617']
  tag nist: ['SI-2 (6)']
+ tag nist_r4: ['SI-2 (6)']
  tag implementation_status: 'implemented'
 
  # Remove old images: a lifecycle policy must be present.

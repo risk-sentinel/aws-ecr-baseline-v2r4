@@ -37,6 +37,7 @@ control 'SV-233231' do
  tag 'documentable'
  tag cci: ['CCI-002617']
  tag nist: ['SI-2 (6)']
+ tag nist_r4: ['SI-2 (6)']
  tag implementation_status: 'implemented'
 
  # Registry-layer ECR assertion (lifecycle prunes old images); account-wide, scoped via excluded_repositories.

@@ -50,6 +50,7 @@ control 'SV-233233' do
  tag 'documentable'
  tag cci: ['CCI-002605']
  tag nist: ['SI-2 c']
+ tag nist_r4: ['SI-2 c']
  tag implementation_status: 'implemented'
 
  # Registry-layer: "latest images with security updates" => no in-scope image is

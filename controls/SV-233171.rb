@@ -27,6 +27,7 @@ control 'SV-233171' do
  tag 'documentable'
  tag cci: ['CCI-001858']
  tag nist: ['AU-5 (2)']
+ tag nist_r4: ['AU-5 (2)']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
 

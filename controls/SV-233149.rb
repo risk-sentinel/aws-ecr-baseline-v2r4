@@ -24,6 +24,7 @@ control 'SV-233149' do
  tag 'documentable'
  tag cci: ['CCI-002364']
  tag nist: ['AC-12 (2)']
+ tag nist_r4: ['AC-12 (1)']
  tag implementation_status: 'not-applicable'
 
  impact 0.0

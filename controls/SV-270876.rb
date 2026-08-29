@@ -24,6 +24,7 @@ control 'SV-270876' do
  tag 'documentable'
  tag cci: ['CCI-001813']
  tag nist: ['CM-5 (1) (a)']
+ tag nist_r4: ['CM-5 (1)']
  tag implementation_status: 'not-applicable'
 
  impact 0.0
