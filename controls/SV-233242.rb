@@ -22,6 +22,7 @@ control 'SV-233242' do
  impact 0.5
  tag check_id: 'C-36178r601831_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233242'
  tag rid: 'SV-233242r961731_rule'
  tag stig_id: 'SRG-APP-000472-CTR-001170'
@@ -30,6 +31,7 @@ control 'SV-233242' do
  tag 'documentable'
  tag cci: ['CCI-002696']
  tag nist: ['SI-6 a']
+ tag nist_r4: ['SI-6 a']
  tag implementation_status: 'alternative'
  tag attestation_category: 'governance'
 

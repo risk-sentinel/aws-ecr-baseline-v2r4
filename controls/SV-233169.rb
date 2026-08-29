@@ -18,6 +18,7 @@ control 'SV-233169' do
  impact 0.5
  tag check_id: 'C-36105r601783_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233169'
  tag rid: 'SV-233169r961395_rule'
  tag stig_id: 'SRG-APP-000358-CTR-000805'
@@ -26,6 +27,7 @@ control 'SV-233169' do
  tag 'documentable'
  tag cci: ['CCI-001851']
  tag nist: ['AU-4 (1)']
+ tag nist_r4: ['AU-4 (1)']
  tag implementation_status: 'implemented'
 
  # Durable, tamper-evident audit-record generation via account CloudTrail (cross-validates

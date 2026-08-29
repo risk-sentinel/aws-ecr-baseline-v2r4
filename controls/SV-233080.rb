@@ -23,6 +23,7 @@ control 'SV-233080' do
  impact 0.5
  tag check_id: 'C-36016r601712_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233080'
  tag rid: 'SV-233080r960975_rule'
  tag stig_id: 'SRG-APP-000150-CTR-000360'
@@ -31,6 +32,8 @@ control 'SV-233080' do
  tag 'documentable'
  tag cci: ['CCI-000766']
  tag nist: ['IA-2 (2)']
+ tag ksi:  ['KSI-IAM-APM']
+ tag nist_r4: ['IA-2 (2)']
  tag implementation_status: 'implemented'
 
  # MFA: AWS IAM root account MFA (the readily-assertable signal; per-user MFA needs the

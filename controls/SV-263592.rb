@@ -24,6 +24,7 @@ control 'SV-263592' do
  impact 0.5
  tag check_id: 'C-67492r982458_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-263592'
  tag rid: 'SV-263592r982459_rule'
  tag stig_id: 'SRG-APP-000835-CTR-000200'
@@ -32,6 +33,7 @@ control 'SV-263592' do
  tag 'documentable'
  tag cci: ['CCI-004059']
  tag nist: ['IA-5 (1) (a)']
+ tag ksi:  ['KSI-IAM-APM']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
 

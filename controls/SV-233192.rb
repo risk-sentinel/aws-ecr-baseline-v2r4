@@ -26,6 +26,7 @@ control 'SV-233192' do
  impact 0.5
  tag check_id: 'C-36128r601797_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233192'
  tag rid: 'SV-233192r961479_rule'
  tag stig_id: 'SRG-APP-000386-CTR-000920'
@@ -34,6 +35,8 @@ control 'SV-233192' do
  tag 'documentable'
  tag cci: ['CCI-001774']
  tag nist: ['CM-7 (5) (b)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-PIY-GIV']
+ tag nist_r4: ['CM-7 (5) (b)']
  tag implementation_status: 'implemented'
 
  # Registry-layer ECR assertion (deny-all / permit-by-exception); account-wide, scoped via excluded_repositories.

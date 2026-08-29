@@ -23,6 +23,7 @@ control 'SV-233039' do
  impact 0.5
  tag check_id: 'C-35975r601614_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233039'
  tag rid: 'SV-233039r960882_rule'
  tag stig_id: 'SRG-APP-000090-CTR-000155'
@@ -31,6 +32,8 @@ control 'SV-233039' do
  tag 'documentable'
  tag cci: ['CCI-000171']
  tag nist: ['AU-12 b']
+ tag ksi:  ['KSI-MLA-LET']
+ tag nist_r4: ['AU-12 b']
  tag implementation_status: 'alternative'
  tag attestation_category: 'governance'
 

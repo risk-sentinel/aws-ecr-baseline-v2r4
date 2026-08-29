@@ -19,6 +19,7 @@ control 'SV-233024' do
  impact 0.5
  tag check_id: 'C-35960r600559_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233024'
  tag rid: 'SV-233024r960783_rule'
  tag stig_id: 'SRG-APP-000028-CTR-000080'
@@ -27,6 +28,8 @@ control 'SV-233024' do
  tag 'documentable'
  tag cci: ['CCI-001404']
  tag nist: ['AC-2 (4)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-MLA-LET', 'KSI-MLA-RVL', 'KSI-SVC-ACM']
+ tag nist_r4: ['AC-2 (4)']
  tag implementation_status: 'implemented'
 
  ok = audit_trail_compliant?

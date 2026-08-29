@@ -25,6 +25,7 @@ control 'SV-233158' do
  impact 0.5
  tag check_id: 'C-36094r981876_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233158'
  tag rid: 'SV-233158r981878_rule'
  tag stig_id: 'SRG-APP-000320-CTR-000750'
@@ -33,6 +34,8 @@ control 'SV-233158' do
  tag 'documentable'
  tag cci: ['CCI-000015']
  tag nist: ['AC-2 (1)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-IAM-SUS']
+ tag nist_r4: ['AC-2 (1)']
  tag implementation_status: 'alternative'
  tag attestation_category: 'operational'
 

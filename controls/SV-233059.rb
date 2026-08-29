@@ -18,6 +18,7 @@ control 'SV-233059' do
  impact 0.5
  tag check_id: 'C-35995r600664_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233059'
  tag rid: 'SV-233059r960939_rule'
  tag stig_id: 'SRG-APP-000121-CTR-000255'
@@ -26,6 +27,8 @@ control 'SV-233059' do
  tag 'documentable'
  tag cci: ['CCI-001493']
  tag nist: ['AU-9 a']
+ tag ksi:  ['KSI-MLA-OSM']
+ tag nist_r4: ['AU-9']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

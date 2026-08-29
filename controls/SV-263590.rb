@@ -25,6 +25,7 @@ control 'SV-263590' do
  impact 0.5
  tag check_id: 'C-67490r981908_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-263590'
  tag rid: 'SV-263590r981910_rule'
  tag stig_id: 'SRG-APP-000825-CTR-000180'

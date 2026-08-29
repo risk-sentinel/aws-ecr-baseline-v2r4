@@ -24,6 +24,7 @@ control 'SV-263601' do
  impact 0.5
  tag check_id: 'C-67501r982476_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-263601'
  tag rid: 'SV-263601r982477_rule'
  tag stig_id: 'SRG-APP-000920-CTR-000320'

@@ -19,6 +19,7 @@ control 'SV-233275' do
  impact 0.5
  tag check_id: 'C-36211r601312_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233275'
  tag rid: 'SV-233275r961863_rule'
  tag stig_id: 'SRG-APP-000516-CTR-001335'
@@ -27,6 +28,8 @@ control 'SV-233275' do
  tag 'documentable'
  tag cci: ['CCI-000366']
  tag nist: ['CM-6 b']
+ tag ksi:  ['KSI-CMT-LMC', 'KSI-CMT-RMV', 'KSI-MLA-EVC', 'KSI-SVC-ACM']
+ tag nist_r4: ['CM-6 b']
  tag implementation_status: 'implemented'
  tag fsbp: 'ECR.1'
 

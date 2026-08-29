@@ -27,6 +27,7 @@ control 'SV-233224' do
  impact 0.7
  tag check_id: 'C-36160r810986_chk'
  tag severity: 'high'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233224'
  tag rid: 'SV-233224r961632_rule'
  tag stig_id: 'SRG-APP-000439-CTR-001080'
@@ -35,6 +36,8 @@ control 'SV-233224' do
  tag 'documentable'
  tag cci: ['CCI-002418']
  tag nist: ['SC-8']
+ tag ksi:  ['KSI-CNA-MAT', 'KSI-CNA-ULN', 'KSI-SVC-SIN']
+ tag nist_r4: ['SC-8']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

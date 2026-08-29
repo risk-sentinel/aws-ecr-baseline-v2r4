@@ -28,6 +28,7 @@ control 'SV-233231' do
  impact 0.5
  tag check_id: 'C-36167r601825_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233231'
  tag rid: 'SV-233231r961677_rule'
  tag stig_id: 'SRG-APP-000454-CTR-001115'
@@ -36,6 +37,7 @@ control 'SV-233231' do
  tag 'documentable'
  tag cci: ['CCI-002617']
  tag nist: ['SI-2 (6)']
+ tag nist_r4: ['SI-2 (6)']
  tag implementation_status: 'implemented'
 
  # Registry-layer ECR assertion (lifecycle prunes old images); account-wide, scoped via excluded_repositories.

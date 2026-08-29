@@ -20,6 +20,7 @@ control 'SV-233032' do
  impact 0.3
  tag check_id: 'C-35968r601608_chk'
  tag severity: 'low'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233032'
  tag rid: 'SV-233032r960843_rule'
  tag stig_id: 'SRG-APP-000068-CTR-000120'
@@ -28,6 +29,7 @@ control 'SV-233032' do
  tag 'documentable'
  tag cci: ['CCI-000048']
  tag nist: ['AC-8 a']
+ tag nist_r4: ['AC-8 a']
  tag implementation_status: 'not-applicable'
 
  impact 0.0

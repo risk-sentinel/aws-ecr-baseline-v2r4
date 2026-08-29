@@ -18,6 +18,7 @@ control 'SV-233118' do
  impact 0.7
  tag check_id: 'C-36054r601744_chk'
  tag severity: 'high'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233118'
  tag rid: 'SV-233118r1043178_rule'
  tag stig_id: 'SRG-APP-000219-CTR-000550'
@@ -26,6 +27,8 @@ control 'SV-233118' do
  tag 'documentable'
  tag cci: ['CCI-001184']
  tag nist: ['SC-23']
+ tag ksi:  ['KSI-IAM-APM', 'KSI-IAM-ELP', 'KSI-IAM-JIT', 'KSI-SVC-SIN', 'KSI-SVC-VCM', 'KSI-SVC-VRI']
+ tag nist_r4: ['SC-23']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

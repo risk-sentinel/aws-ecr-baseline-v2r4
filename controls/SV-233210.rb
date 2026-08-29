@@ -20,6 +20,7 @@ control 'SV-233210' do
  impact 0.5
  tag check_id: 'C-36146r601117_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233210'
  tag rid: 'SV-233210r961563_rule'
  tag stig_id: 'SRG-APP-000414-CTR-001010'
@@ -28,6 +29,8 @@ control 'SV-233210' do
  tag 'documentable'
  tag cci: ['CCI-001067']
  tag nist: ['RA-5 (5)']
+ tag ksi:  ['KSI-IAM-JIT', 'KSI-IAM-SNU']
+ tag nist_r4: ['RA-5 (5)']
  tag implementation_status: 'implemented'
  tag fsbp: 'ECR.1'
 

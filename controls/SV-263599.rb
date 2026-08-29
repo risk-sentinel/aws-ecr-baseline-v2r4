@@ -20,6 +20,7 @@ control 'SV-263599' do
  impact 0.5
  tag check_id: 'C-67499r982472_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-263599'
  tag rid: 'SV-263599r982473_rule'
  tag stig_id: 'SRG-APP-000910-CTR-000300'
@@ -28,6 +29,7 @@ control 'SV-263599' do
  tag 'documentable'
  tag cci: ['CCI-004909']
  tag nist: ['SC-17 b']
+ tag ksi:  ['KSI-SVC-ASM']
  tag implementation_status: 'implemented'
  tag fsbp: 'n/a'
 

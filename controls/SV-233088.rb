@@ -19,6 +19,7 @@ control 'SV-233088' do
  impact 0.5
  tag check_id: 'C-36024r600751_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233088'
  tag rid: 'SV-233088r981854_rule'
  tag stig_id: 'SRG-APP-000164-CTR-000400'
@@ -27,6 +28,7 @@ control 'SV-233088' do
  tag 'documentable'
  tag cci: ['CCI-004066']
  tag nist: ['IA-5 (1) (h)']
+ tag ksi:  ['KSI-IAM-APM']
  tag implementation_status: 'implemented'
 
  minlen = input('pw_min_length', value: 15)

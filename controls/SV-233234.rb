@@ -25,6 +25,7 @@ control 'SV-233234' do
  impact 0.5
  tag check_id: 'C-36170r1137635_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233234'
  tag rid: 'SV-233234r1137650_rule'
  tag stig_id: 'SRG-APP-000456-CTR-001130'
@@ -33,6 +34,8 @@ control 'SV-233234' do
  tag 'documentable'
  tag cci: ['CCI-002605']
  tag nist: ['SI-2 c']
+ tag ksi:  ['KSI-CMT-VTD']
+ tag nist_r4: ['SI-2 c']
  tag implementation_status: 'implemented'
 
  # Security updates installed within window => no unscanned/over-severity images (finding gate).

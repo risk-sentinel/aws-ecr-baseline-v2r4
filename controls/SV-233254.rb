@@ -15,6 +15,7 @@ control 'SV-233254' do
  impact 0.5
  tag check_id: 'C-36190r601249_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233254'
  tag rid: 'SV-233254r961797_rule'
  tag stig_id: 'SRG-APP-000494-CTR-001230'
@@ -23,6 +24,8 @@ control 'SV-233254' do
  tag 'documentable'
  tag cci: ['CCI-000172']
  tag nist: ['AU-12 c']
+ tag ksi:  ['KSI-MLA-LET']
+ tag nist_r4: ['AU-12 c']
  tag implementation_status: 'implemented'
 
  # Durable, tamper-evident audit-record generation via account CloudTrail (cross-validates

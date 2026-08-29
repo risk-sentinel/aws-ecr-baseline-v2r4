@@ -14,6 +14,7 @@ control 'SV-263586' do
  impact 0.5
  tag check_id: 'C-67486r982452_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-263586'
  tag rid: 'SV-263586r982453_rule'
  tag stig_id: 'SRG-APP-000705-CTR-000110'
@@ -22,6 +23,7 @@ control 'SV-263586' do
  tag 'documentable'
  tag cci: ['CCI-003628']
  tag nist: ['AC-2 (3) (b)']
+ tag ksi:  ['KSI-IAM-AAM', 'KSI-IAM-JIT', 'KSI-IAM-SUS']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

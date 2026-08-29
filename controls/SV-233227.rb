@@ -19,6 +19,7 @@ control 'SV-233227' do
  impact 0.5
  tag check_id: 'C-36163r601819_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233227'
  tag rid: 'SV-233227r961641_rule'
  tag stig_id: 'SRG-APP-000442-CTR-001095'
@@ -27,6 +28,7 @@ control 'SV-233227' do
  tag 'documentable'
  tag cci: ['CCI-002422']
  tag nist: ['SC-8 (2)']
+ tag nist_r4: ['SC-8 (2)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

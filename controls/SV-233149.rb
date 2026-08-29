@@ -15,6 +15,7 @@ control 'SV-233149' do
  impact 0.3
  tag check_id: 'C-36085r600934_chk'
  tag severity: 'low'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233149'
  tag rid: 'SV-233149r961227_rule'
  tag stig_id: 'SRG-APP-000297-CTR-000705'
@@ -23,6 +24,7 @@ control 'SV-233149' do
  tag 'documentable'
  tag cci: ['CCI-002364']
  tag nist: ['AC-12 (2)']
+ tag nist_r4: ['AC-12 (1)']
  tag implementation_status: 'not-applicable'
 
  impact 0.0

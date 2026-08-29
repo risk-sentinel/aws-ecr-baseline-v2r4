@@ -29,6 +29,7 @@ control 'SV-233284' do
  impact 0.5
  tag check_id: 'C-36220r601855_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233284'
  tag rid: 'SV-233284r961893_rule'
  tag stig_id: 'SRG-APP-000605-CTR-001380'
@@ -37,6 +38,8 @@ control 'SV-233284' do
  tag 'documentable'
  tag cci: ['CCI-000185']
  tag nist: ['IA-5 (2) (b) (1)']
+ tag ksi:  ['KSI-IAM-APM', 'KSI-IAM-ELP', 'KSI-IAM-SNU', 'KSI-SVC-ASM']
+ tag nist_r4: ['IA-5 (2) (a)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

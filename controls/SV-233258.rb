@@ -17,6 +17,7 @@ control 'SV-233258' do
  impact 0.5
  tag check_id: 'C-36194r601261_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233258'
  tag rid: 'SV-233258r961809_rule'
  tag stig_id: 'SRG-APP-000498-CTR-001250'
@@ -25,6 +26,8 @@ control 'SV-233258' do
  tag 'documentable'
  tag cci: ['CCI-000172']
  tag nist: ['AU-12 c']
+ tag ksi:  ['KSI-MLA-LET']
+ tag nist_r4: ['AU-12 c']
  tag implementation_status: 'implemented'
 
  # Durable, tamper-evident audit-record generation via account CloudTrail (cross-validates

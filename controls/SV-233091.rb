@@ -17,6 +17,7 @@ control 'SV-233091' do
  impact 0.5
  tag check_id: 'C-36027r601726_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233091'
  tag rid: 'SV-233091r981857_rule'
  tag stig_id: 'SRG-APP-000167-CTR-000415'
@@ -25,6 +26,7 @@ control 'SV-233091' do
  tag 'documentable'
  tag cci: ['CCI-004066']
  tag nist: ['IA-5 (1) (h)']
+ tag ksi:  ['KSI-IAM-APM']
  tag implementation_status: 'implemented'
 
  impact 0.5

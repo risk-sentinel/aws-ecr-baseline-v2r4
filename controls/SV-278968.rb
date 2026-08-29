@@ -16,6 +16,7 @@ control 'SV-278968' do
  impact 0.7
  tag check_id: 'C-83516r1137651_chk'
  tag severity: 'high'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-278968'
  tag rid: 'SV-278968r1137653_rule'
  tag stig_id: 'SRG-APP-001035-CTR-000323'
@@ -24,6 +25,8 @@ control 'SV-278968' do
  tag 'documentable'
  tag cci: ['CCI-003376']
  tag nist: ['SA-22 a']
+ tag ksi:  ['KSI-SCR-MIT']
+ tag nist_r4: ['SA-22 a']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

@@ -25,6 +25,7 @@ control 'SV-233289' do
  impact 0.7
  tag check_id: 'C-36225r601354_chk'
  tag severity: 'high'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233289'
  tag rid: 'SV-233289r1137648_rule'
  tag stig_id: 'SRG-APP-000635-CTR-001405'
@@ -33,6 +34,8 @@ control 'SV-233289' do
  tag 'documentable'
  tag cci: ['CCI-002450']
  tag nist: ['SC-13 b']
+ tag ksi:  ['KSI-SVC-SIN', 'KSI-SVC-VRI']
+ tag nist_r4: ['SC-13']
  tag implementation_status: 'implemented'
 
  # Encryption at rest: ECR repos encrypted with a KMS CMK (FIPS-validated, HSM-backed

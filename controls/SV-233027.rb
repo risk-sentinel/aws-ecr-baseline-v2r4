@@ -19,6 +19,7 @@ control 'SV-233027' do
  impact 0.5
  tag check_id: 'C-35963r600568_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233027'
  tag rid: 'SV-233027r1137639_rule'
  tag stig_id: 'SRG-APP-000033-CTR-000095'
@@ -27,6 +28,8 @@ control 'SV-233027' do
  tag 'documentable'
  tag cci: ['CCI-000213']
  tag nist: ['AC-3']
+ tag ksi:  ['KSI-IAM-APM', 'KSI-IAM-ELP', 'KSI-IAM-JIT']
+ tag nist_r4: ['AC-3']
  tag implementation_status: 'implemented'
 
  # Least-privilege access to the registry: no public/cross-account principal.

@@ -14,6 +14,7 @@ control 'SV-233200' do
  impact 0.5
  tag check_id: 'C-36136r601803_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-233200'
  tag rid: 'SV-233200r961521_rule'
  tag stig_id: 'SRG-APP-000400-CTR-000960'
@@ -22,6 +23,7 @@ control 'SV-233200' do
  tag 'documentable'
  tag cci: ['CCI-002007']
  tag nist: ['IA-5 (13)']
+ tag nist_r4: ['IA-5 (13)']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 

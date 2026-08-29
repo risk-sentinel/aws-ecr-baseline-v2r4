@@ -16,6 +16,7 @@ control 'SV-270875' do
  impact 0.5
  tag check_id: 'C-74910r1050644_chk'
  tag severity: 'medium'
+ tag severity_source: 'DISA SRG'
  tag gid: 'V-270875'
  tag rid: 'SV-270875r1050646_rule'
  tag stig_id: 'SRG-APP-000247-CTR-000330'
@@ -24,6 +25,7 @@ control 'SV-270875' do
  tag 'documentable'
  tag cci: ['CCI-001095']
  tag nist: ['SC-5 (2)']
+ tag nist_r4: ['SC-5 (2)']
  tag implementation_status: 'not-applicable'
 
  impact 0.0
