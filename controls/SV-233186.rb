@@ -30,6 +30,7 @@ control 'SV-233186' do
  tag 'documentable'
  tag cci: ['CCI-003980']
  tag nist: ['CM-11 (2)']
+ tag nist_r4: ['CM-11 (2)']
  tag implementation_status: 'implemented'
  tag fsbp: 'ECR.2'
 

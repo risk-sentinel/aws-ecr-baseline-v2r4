@@ -33,6 +33,7 @@ control 'SV-263601' do
  tag 'documentable'
  tag cci: ['CCI-004922']
  tag nist: ['SC-45']
+ tag nist_r4_unmapped: ['SC-45']
  tag implementation_status: 'inherited'
  tag inherited_from: 'aws-shared-responsibility'
 
